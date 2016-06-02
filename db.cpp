@@ -121,10 +121,10 @@ void db::import(const char filename[]){
 					sout[2] = s[i + 3];
 					i += 3;
 				} else if (cnt == 17) {
-                    sout[3] = s[i + 1];
-                    sout[4] = s[i + 2];
-                    sout[5] = s[i + 3];
-                    i += 3;
+					sout[3] = s[i + 1];
+					sout[4] = s[i + 2];
+					sout[5] = s[i + 3];
+					i += 3;
 				}
 			}
 		}
