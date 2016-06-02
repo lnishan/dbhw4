@@ -4,3 +4,4 @@
 *.exe
 *.swp
 *.stackdump
+*.exe.stackdump
