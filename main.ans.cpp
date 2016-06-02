@@ -36,10 +36,11 @@ int main(int argc, char* argv[]){
 	double result3 = mydb.query("JFK", "LAX");
 	double result4 = mydb.query("JFK", "IAH");
 	double result5 = mydb.query("LAX", "IAH");
+	printf("%.4f %.4f %.4f %.4f %.4f\n", result1, result2, result3, result4, result5);
 
 	//End timing
 	double query_time = (double)(clock() - tQuery) / CLOCKS_PER_SEC;
-	
+
 	printf("Time taken for import: %.2fs\n", import_time);
 	printf("Time taken for creating index: %.2fs\n", index_time);
 	printf("Time taken for making queries: %.2fs\n", query_time);
