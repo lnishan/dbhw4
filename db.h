@@ -5,7 +5,7 @@
 #include <random>
 #include <algorithm>
 
-#define TB_SIZE 65536
+
 
 class umap_t {
 	friend class umap;
@@ -19,40 +19,44 @@ class umap_ref {
 	friend class umap;
 	private:
 		char used;
-		char key[2][3];
+		char key[6];
 	public:
 		umap_ref();
 		inline bool equal(const char[], const char[]);
+		inline bool equal(const char[]);
 };
 
 class umap {
-	public:
-	// private:
+	private:
+		static int TB_BITS;
+		static int TB_SIZE;
+		static int TB_MASK;
+
 		std::default_random_engine generator;
 		std::uniform_int_distribution<int> distribution;
 		int hash_ref[6][128];
 		std::vector<umap_ref> ref;
 		std::vector<umap_t> data;
-	// public:
+	public:
 		typedef umap_t * iterator;
 		umap();
 		inline int hash(const char [], const char []); 
-		inline int hash(const char &, const char &, const char &, const char &, const char &, const char &);
+		inline int hash(const char []);
 
 		iterator find(const char[], const char[]);
-		void insert(const char [], const char [], long);
+		inline void insert(const char [], long);
 };
 
 class db{
 	private:
-		std::string temp_dir;
+		char temp_dir[30];
 		umap mp;
 	public:
 		db() {}
 
 		void init();                                     //Do your db initialization.
 
-		void setTempFileDir(const std::string &);                //All the files that created by your program should be located under this directory.
+		void setTempFileDir(const char []);                //All the files that created by your program should be located under this directory.
 
 		void import(const char s[]);                        //Inport a csv file to your database.
 

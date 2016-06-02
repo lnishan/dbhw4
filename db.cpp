@@ -1,7 +1,11 @@
 #include "db.h"
 
+int umap::TB_BITS = 16;
+int umap::TB_SIZE = 1 << TB_BITS;
+int umap::TB_MASK = TB_SIZE - 1;
+
 umap_t::umap_t(){
-	pos.reserve(100);
+	pos.reserve(400);
 }
 
 umap_ref::umap_ref(): used(0) {
@@ -10,12 +14,22 @@ umap_ref::umap_ref(): used(0) {
 
 inline bool umap_ref::equal(const char ori[3], const char dst[3]) {
 	return
-		key[0][0] == ori[0] &&
-		key[0][1] == ori[1] &&
-		key[0][2] == ori[2] &&
-		key[1][0] == dst[0] &&
-		key[1][1] == dst[1] &&
-		key[1][2] == dst[2];
+		key[0] == ori[0] &&
+		key[1] == ori[1] &&
+		key[2] == ori[2] &&
+		key[3] == dst[0] &&
+		key[4] == dst[1] &&
+		key[5] == dst[2];
+}
+
+inline bool umap_ref::equal(const char key_i[6]) {
+	return
+		key[0] == key_i[0] &&
+		key[1] == key_i[1] &&
+		key[2] == key_i[2] &&
+		key[3] == key_i[3] &&
+		key[4] == key_i[4] &&
+		key[5] == key_i[5];
 }
 
 umap::umap(): distribution(0, TB_SIZE - 1) {
@@ -30,17 +44,21 @@ umap::umap(): distribution(0, TB_SIZE - 1) {
 umap::iterator umap::find(const char ori[3], const char dst[3]) {
 	int h = hash(ori, dst);
 	while (ref[h].used && !ref[h].equal(ori, dst))
-		h = (h + 1) % TB_SIZE;
+		h = (h + 1) & TB_MASK;
 	return ref[h].used ? (&data[h]) : NULL;
 }
 
-void umap::insert(const char ori[3], const char dst[3], long pos = 0) {
-	int h = hash(ori, dst);
-	while (ref[h].used && !ref[h].equal(ori, dst))
-		h = (h + 1) % TB_SIZE;
+void umap::insert(const char key_i[6], long pos = 0) {
+	int h = hash(key_i);
+	while (ref[h].used && !ref[h].equal(key_i))
+		h = (h + 1) & TB_MASK;
 	ref[h].used = 1;
-	ref[h].key[0][0] = ori[0]; ref[h].key[0][1] = ori[1]; ref[h].key[0][2] = ori[2];
-	ref[h].key[1][0] = dst[0]; ref[h].key[1][1] = dst[1]; ref[h].key[1][2] = dst[2];
+	ref[h].key[0] = key_i[0];
+	ref[h].key[1] = key_i[1];
+	ref[h].key[2] = key_i[2];
+	ref[h].key[3] = key_i[3];
+	ref[h].key[4] = key_i[4];
+	ref[h].key[5] = key_i[5];
 	data[h].pos.emplace_back(pos);
 }
 
@@ -54,30 +72,31 @@ inline int umap::hash(const char ori[3], const char dst[3]) {
 		hash_ref[5][dst[2]];
 }
 
-inline int umap::hash(const char &c0, const char &c1, const char &c2, const char &c3, const char &c4, const char &c5) {
+inline int umap::hash(const char key_i[6]) {
 	return
-		hash_ref[0][c0] ^
-		hash_ref[1][c1] ^
-		hash_ref[2][c2] ^
-		hash_ref[3][c3] ^
-		hash_ref[4][c4] ^
-		hash_ref[5][c5];
+		hash_ref[0][key_i[0]] ^
+		hash_ref[1][key_i[1]] ^
+		hash_ref[2][key_i[2]] ^
+		hash_ref[3][key_i[3]] ^
+		hash_ref[4][key_i[4]] ^
+		hash_ref[5][key_i[5]];
 }
 void db::init(){
 	//Do your db initialization.
 }
 
-void db::setTempFileDir(const std::string &dir){
+void db::setTempFileDir(const char dir[15]){
 	//All the files that created by your program should be located under this directory.
-	temp_dir = dir + "/lnishan.db";
-	FILE *fo = fopen(temp_dir.c_str(), "w"); // empties the file
+	strcpy(temp_dir, dir);
+	strcat(temp_dir, "/lnishan.db");
+	FILE *fo = fopen(temp_dir, "w"); // empties the file
 	fclose(fo);
 }
 
 void db::import(const char filename[]){
 	//Inport a csv file to your database.
 	FILE *fi = fopen(filename, "r");
-	FILE *fo = fopen(temp_dir.c_str(), "a");
+	FILE *fo = fopen(temp_dir, "a");
 	int i, j, k, cnt;
 	char s[500], sout[20];
 	fgets(s, 500, fi);
@@ -117,12 +136,12 @@ void db::import(const char filename[]){
 
 void db::createIndex(){
 	//Create index.
-	FILE *fi = fopen(temp_dir.c_str(), "r");
+	FILE *fi = fopen(temp_dir, "r");
 	long pos = ftell(fi);
 	char s[30];
 	while (fgets(s, 30, fi)) {
 		/* safety, can remove for testing */ if (!s[0]) continue;
-		mp.insert(s, s + 3, pos);
+		mp.insert(s, pos);
 		pos = ftell(fi);
 	}
 	fclose(fi);
@@ -138,7 +157,7 @@ double db::query(const char ori[], const char dst[]){
 	if (it == NULL) // Not found
 		ret = 0.0;
 	else {
-		FILE * fi = fopen(temp_dir.c_str(), "r");
+		FILE * fi = fopen(temp_dir, "r");
 		char s[30];
 		long long sum = 0;
 		int i, delay;
@@ -167,7 +186,7 @@ double db::query(const char ori[], const char dst[]){
 
 void db::cleanup(){
 	//Release memory, close files and anything you should do to clean up your db class.
-	FILE *fo = fopen(temp_dir.c_str(), "w"); // empties the file
+	FILE *fo = fopen(temp_dir, "w"); // empties the file
 	fclose(fo);
 }
 
