@@ -5,3 +5,6 @@
 *.swp
 *.stackdump
 *.exe.stackdump
+*.db
+test
+test_ans

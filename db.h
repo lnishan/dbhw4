@@ -5,7 +5,11 @@
 #include <random>
 #include <algorithm>
 
+#ifndef WBUF_SIZE
 
+#define WBUF_SIZE 100000000
+
+#endif
 
 class umap_t {
 	friend class umap;
@@ -49,6 +53,9 @@ class umap {
 
 class db{
 	private:
+		char *wbuf;
+		int iter;
+
 		char temp_dir[30];
 		umap mp;
 	public:
@@ -67,6 +74,6 @@ class db{
 		void cleanup();                                  //Release memory, close files and anything you should do to clean up your db class.
 
 
-
+		inline void flushWbuf(FILE *);
 
 };

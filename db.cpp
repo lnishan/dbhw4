@@ -83,6 +83,8 @@ inline int umap::hash(const char key_i[6]) {
 }
 void db::init(){
 	//Do your db initialization.
+	wbuf = new char[WBUF_SIZE];
+	iter = 0;
 }
 
 void db::setTempFileDir(const char dir[15]){
@@ -99,6 +101,7 @@ void db::import(const char filename[]){
 	FILE *fo = fopen(temp_dir, "a");
 	int i, j, k, cnt;
 	char s[500], sout[20];
+	int next_iter;
 	fgets(s, 500, fi);
 	while (fgets(s, 500, fi)) {
 		cnt = 0;
@@ -107,29 +110,35 @@ void db::import(const char filename[]){
 				++cnt;
 				if (cnt == 14) {
 					if (s[i + 1] == 'N') { // NA
-						sout[6] = '0';
-						sout[7] = '\n'; sout[8] = 0;
+						wbuf[iter + 6] = '0';
+						wbuf[iter + 7] = '\n';
+						next_iter = iter + 8;
 					} else {
-						for (j = i + 1, k = 6; s[j] != ','; ++j, ++k)
-							sout[k] = s[j];
-						sout[k] = '\n'; sout[k + 1] = 0;
+						for (j = i + 1, k = iter + 6; s[j] != ','; ++j, ++k)
+							wbuf[k] = s[j];
+						wbuf[k] = '\n';
 						i = j - 1;
+						next_iter = k + 1;
 					}
 				} else if (cnt == 16) {
-					sout[0] = s[i + 1];
-					sout[1] = s[i + 2];
-					sout[2] = s[i + 3];
+					wbuf[iter    ] = s[i + 1];
+					wbuf[iter + 1] = s[i + 2];
+					wbuf[iter + 2] = s[i + 3];
 					i += 3;
 				} else if (cnt == 17) {
-					sout[3] = s[i + 1];
-					sout[4] = s[i + 2];
-					sout[5] = s[i + 3];
+					wbuf[iter + 3] = s[i + 1];
+					wbuf[iter + 4] = s[i + 2];
+					wbuf[iter + 5] = s[i + 3];
 					i += 3;
 				}
 			}
 		}
-		fputs(sout, fo);
+		iter = next_iter;
 	}
+	wbuf[iter] = 0;
+	fputs(wbuf, fo);
+	iter = 0;
+
 	fclose(fi);
 	fclose(fo);
 }
@@ -188,6 +197,11 @@ void db::cleanup(){
 	//Release memory, close files and anything you should do to clean up your db class.
 	FILE *fo = fopen(temp_dir, "w"); // empties the file
 	fclose(fo);
+
+	delete [] wbuf;
 }
 
-
+inline void db::flushWbuf(FILE *fo) {
+	fputs(wbuf, fo);
+	iter = 0;
+}
