@@ -48,7 +48,7 @@ umap::iterator umap::find(const char ori[3], const char dst[3]) {
 	return ref[h].used ? (&data[h]) : NULL;
 }
 
-void umap::insert(const char key_i[6], long pos = 0) {
+void umap::insert(const char key_i[6], const long &pos) {
 	int h = hash(key_i);
 	while (ref[h].used && !ref[h].equal(key_i))
 		h = (h + 1) & TB_MASK;

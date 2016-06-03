@@ -48,7 +48,7 @@ class umap {
 		inline int hash(const char []);
 
 		iterator find(const char[], const char[]);
-		inline void insert(const char [], long);
+		inline void insert(const char [], const long &);
 };
 
 class db{
