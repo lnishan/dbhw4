@@ -6,7 +6,7 @@ compiler:
   - clang
 
 install:
-    - env "g++"="g++-4.8"; env "gcc"="gcc-4.8"
+    - export g++="g++-4.8"; export gcc="gcc-4.8"
     - make
 
 addons:
