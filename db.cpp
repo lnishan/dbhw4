@@ -5,7 +5,7 @@ int umap::TB_SIZE = 1 << TB_BITS;
 int umap::TB_MASK = TB_SIZE - 1;
 
 umap_t::umap_t(){
-	pos.reserve(400);
+	pos.reserve(2048);
 }
 
 umap_ref::umap_ref(): used(0) {
