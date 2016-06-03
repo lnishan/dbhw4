@@ -129,7 +129,7 @@ void db::import(const char filename[]){
 					wbuf[iter + 3] = s[i + 1];
 					wbuf[iter + 4] = s[i + 2];
 					wbuf[iter + 5] = s[i + 3];
-					i += 3;
+					break;
 				}
 			}
 		}
