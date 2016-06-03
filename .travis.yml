@@ -2,10 +2,9 @@ sudo: required
 dist: trusty
 language: cpp
 compiler: gcc
-before-install: which gcc; which g++; which g++-5; which gcc-5
+before-install: which g++; which g++-4.9;
 install: make
 addons:
   apt:
     packages:
-      - gcc-5
-      - g++-5
+      - g++-4.9
