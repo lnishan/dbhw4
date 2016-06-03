@@ -85,6 +85,7 @@ void db::init(){
 	//Do your db initialization.
 	wbuf = new char[WBUF_SIZE];
 	iter = 0;
+	indexed = 0;
 }
 
 void db::setTempFileDir(const char dir[15]){
@@ -150,6 +151,7 @@ void db::createIndex(){
 		pos = ftell(fi);
 	}
 	fclose(fi);
+	indexed = 1;
 }
 
 double db::query(const char ori[], const char dst[]){
@@ -158,32 +160,59 @@ double db::query(const char ori[], const char dst[]){
 	// printf("%d\n", mp.hash(ori, dst));
 
 	double ret;
-	auto it = mp.find(ori, dst);
-	if (it == NULL) // Not found
-		ret = 0.0;
-	else {
-		FILE * fi = fopen(temp_dir, "r");
+	if (indexed) {
+		auto it = mp.find(ori, dst);
+		if (it == NULL) // Not found
+			ret = 0.0;
+		else {
+			FILE * fi = fopen(temp_dir, "r");
+			char s[30];
+			long long sum = 0;
+			int i, delay;
+			for (auto &p: it->pos) {
+				fseek(fi, p, SEEK_SET);
+				fgets(s, 30, fi);
+				/* safety, can remove for testing */ if (!s[0]) continue;
+				if (s[6] == '-') {
+					delay = s[7] - 48;
+					for (i = 8; s[i] != '\n'; ++i)
+						delay = delay * 10 + s[i] - 48;
+					delay = -delay;
+				} else {
+					delay = s[6] - 48;
+					for (i = 7; s[i] != '\n'; ++i)
+						delay = delay * 10 + s[i] - 48;
+				}
+				// printf("%d ", delay);
+				sum += delay;
+			}
+			ret = (double)sum / it->pos.size();
+			fclose(fi);
+		}
+	} else {
+		FILE *fi = fopen(temp_dir, "r");
 		char s[30];
 		long long sum = 0;
-		int i, delay;
-		for (auto &p: it->pos) {
-			fseek(fi, p, SEEK_SET);
-			fgets(s, 30, fi);
+		int i, delay, flights = 0;
+		while (fgets(s, 30, fi)) {
 			/* safety, can remove for testing */ if (!s[0]) continue;
-			if (s[6] == '-') {
-				delay = s[7] - 48;
-				for (i = 8; s[i] != '\n'; ++i)
-					delay = delay * 10 + s[i] - 48;
-				delay = -delay;
-			} else {
-				delay = s[6] - 48;
-				for (i = 7; s[i] != '\n'; ++i)
-					delay = delay * 10 + s[i] - 48;
+			if (s[0] == ori[0] && s[1] == ori[1] && s[2] == ori[2] &&
+					s[3] == dst[0] && s[4] == dst[1] && s[5] == dst[2]) {
+				if (s[6] == '-') {
+					delay = s[7] - 48;
+					for (i = 8; s[i] != '\n'; ++i)
+						delay = delay * 10 + s[i] - 48;
+					delay = -delay;
+				} else {
+					delay = s[6] - 48;
+					for (i = 7; s[i] != '\n'; ++i)
+						delay = delay * 10 + s[i] - 48;
+				}
+				++flights;
+				sum += delay;
 			}
-			// printf("%d ", delay);
-			sum += delay;
 		}
-		ret = (double)sum / it->pos.size();
+		ret = (double)sum / flights;
 		fclose(fi);
 	}
 	return ret; //Remember to return your result.

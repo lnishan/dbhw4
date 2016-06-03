@@ -56,6 +56,7 @@ class db{
 		char *wbuf;
 		int iter;
 
+		char indexed;
 		char temp_dir[30];
 		umap mp;
 	public:
