@@ -41,9 +41,9 @@ int main(int argc, char* argv[]){
 	//End timing
 	double query_time = (double)(clock() - tQuery) / CLOCKS_PER_SEC;
 
-	printf("Time taken for import: %.2fs\n", import_time);
-	printf("Time taken for creating index: %.2fs\n", index_time);
-	printf("Time taken for making queries: %.2fs\n", query_time);
+	printf("Time taken for import: %.4fs\n", import_time);
+	printf("Time taken for indexing: %.4fs\n", index_time);
+	printf("Time taken for queries: %.4fs\n", query_time);
 
 	//Cleanup db object
 	mydb.cleanup();
