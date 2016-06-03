@@ -109,28 +109,29 @@ void db::import(const char filename[]){
 	while (fgets(s, 500, fi)) {
 		cnt = 0;
 		for (i = 0; s[i]; ++i) {
-			if (s[i] == ',') {
-				++cnt;
-				if (cnt == 14) {
-					if (s[i + 1] != 'N' && s[i + 1] != ',') { // NA, Empty
-						for (j = i + 1, k = iter + 6; s[j] != ','; ++j, ++k)
-							wbuf[k] = s[j];
-						wbuf[k] = '\n';
-						i = j - 1;
-						next_iter = k + 1;
-					}
-				} else if (cnt == 16) {
-					wbuf[iter    ] = s[i + 1];
-					wbuf[iter + 1] = s[i + 2];
-					wbuf[iter + 2] = s[i + 3];
-					i += 3;
-				} else if (cnt == 17) {
-					wbuf[iter + 3] = s[i + 1];
-					wbuf[iter + 4] = s[i + 2];
-					wbuf[iter + 5] = s[i + 3];
-					break;
-				}
+			for ( ; cnt != 14; ++i)
+				if (s[i] == ',') ++cnt;
+			if (s[i] != 'N' && s[i] != ',') { // NA, Empty
+				for (j = i, k = iter + 6; s[j] != ','; ++j, ++k)
+					wbuf[k] = s[j];
+				wbuf[k] = '\n';
+				i = j - 1;
+				next_iter = k + 1;
 			}
+
+			for ( ; cnt != 16; ++i)
+				if (s[i] == ',') ++cnt;
+			wbuf[iter    ] = s[i    ];
+			wbuf[iter + 1] = s[i + 1];
+			wbuf[iter + 2] = s[i + 2];
+			i += 3;
+
+			for ( ; cnt != 17; ++i)
+				if (s[i] == ',') ++cnt;
+			wbuf[iter + 3] = s[i    ];
+			wbuf[iter + 4] = s[i + 1];
+			wbuf[iter + 5] = s[i + 2];
+			break;
 		}
 		iter = next_iter;
 	}
@@ -220,8 +221,8 @@ double db::query(const char ori[], const char dst[]){
 
 void db::cleanup(){
 	//Release memory, close files and anything you should do to clean up your db class.
-	FILE *fo = fopen(temp_dir, "w"); // empties the file
-	fclose(fo);
+	// FILE *fo = fopen(temp_dir, "w"); // empties the file
+	// fclose(fo);
 
 	delete [] wbuf;
 }
