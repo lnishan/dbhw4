@@ -221,8 +221,8 @@ double db::query(const char ori[], const char dst[]){
 
 void db::cleanup(){
 	//Release memory, close files and anything you should do to clean up your db class.
-	// FILE *fo = fopen(temp_dir, "w"); // empties the file
-	// fclose(fo);
+	FILE *fo = fopen(temp_dir, "w"); // empties the file
+	fclose(fo);
 
 	delete [] wbuf;
 }
