@@ -1,6 +1,13 @@
 language: none
 sudo: false
 
+cache:
+  apt: true
+
+env:
+  global:
+    - PATH="$HOME/bin:$PATH"
+
 matrix:
   include:
     - env: CXX=g++-5 CC=gcc-5 GCOV=gcov-5
