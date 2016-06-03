@@ -109,11 +109,7 @@ void db::import(const char filename[]){
 			if (s[i] == ',') {
 				++cnt;
 				if (cnt == 14) {
-					if (s[i + 1] == 'N') { // NA
-						wbuf[iter + 6] = '0';
-						wbuf[iter + 7] = '\n';
-						next_iter = iter + 8;
-					} else {
+					if (s[i + 1] != 'N' && s[i + 1] != ',') { // NA, Empty
 						for (j = i + 1, k = iter + 6; s[j] != ','; ++j, ++k)
 							wbuf[k] = s[j];
 						wbuf[k] = '\n';

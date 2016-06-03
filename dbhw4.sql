@@ -1,5 +1,8 @@
 /*
 
+The table has "NA" and empty columns,
+so the correct results should be slightly higher than below
+
 +---------------+
 | AVG(ArrDelay) |
 +---------------+
@@ -18,3 +21,4 @@
 (SELECT AVG(ArrDelay) FROM `ontime` WHERE Origin='JFK' AND Dest='LAX') UNION
 (SELECT AVG(ArrDelay) FROM `ontime` WHERE Origin='JFK' AND Dest='IAH') UNION
 (SELECT AVG(ArrDelay) FROM `ontime` WHERE Origin='LAX' AND Dest='IAH')
+
