@@ -148,7 +148,7 @@ void db::createIndex(){
 	long pos = ftell(fi);
 	char s[30];
 	while (fgets(s, 30, fi)) {
-		/* safety, can remove for testing */ if (!s[0]) continue;
+		if (s[0] == '\n') continue;
 		mp.insert(s, pos);
 		pos = ftell(fi);
 	}
@@ -174,7 +174,6 @@ double db::query(const char ori[], const char dst[]){
 			for (auto &p: it->pos) {
 				fseek(fi, p, SEEK_SET);
 				fgets(s, 30, fi);
-				/* safety, can remove for testing */ if (!s[0]) continue;
 				if (s[6] == '-') {
 					delay = s[7] - 48;
 					for (i = 8; s[i] != '\n'; ++i)
@@ -185,7 +184,6 @@ double db::query(const char ori[], const char dst[]){
 					for (i = 7; s[i] != '\n'; ++i)
 						delay = delay * 10 + s[i] - 48;
 				}
-				// printf("%d ", delay);
 				sum += delay;
 			}
 			ret = (double)sum / it->pos.size();
@@ -197,7 +195,7 @@ double db::query(const char ori[], const char dst[]){
 		long long sum = 0;
 		int i, delay, flights = 0;
 		while (fgets(s, 30, fi)) {
-			/* safety, can remove for testing */ if (!s[0]) continue;
+			if (s[0] == '\n') continue;
 			if (s[0] == ori[0] && s[1] == ori[1] && s[2] == ori[2] &&
 					s[3] == dst[0] && s[4] == dst[1] && s[5] == dst[2]) {
 				if (s[6] == '-') {
@@ -217,7 +215,7 @@ double db::query(const char ori[], const char dst[]){
 		ret = (double)sum / flights;
 		fclose(fi);
 	}
-	return ret; //Remember to return your result.
+	return ret;
 }
 
 void db::cleanup(){
