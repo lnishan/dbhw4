@@ -8,3 +8,4 @@
 *.db
 test
 test_ans
+.DS_Store
