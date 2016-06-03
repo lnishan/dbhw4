@@ -52,13 +52,15 @@ void umap::insert(const char key_i[6], long pos = 0) {
 	int h = hash(key_i);
 	while (ref[h].used && !ref[h].equal(key_i))
 		h = (h + 1) & TB_MASK;
-	ref[h].used = 1;
-	ref[h].key[0] = key_i[0];
-	ref[h].key[1] = key_i[1];
-	ref[h].key[2] = key_i[2];
-	ref[h].key[3] = key_i[3];
-	ref[h].key[4] = key_i[4];
-	ref[h].key[5] = key_i[5];
+	if (!ref[h].used) {
+		ref[h].used = 1;
+		ref[h].key[0] = key_i[0];
+		ref[h].key[1] = key_i[1];
+		ref[h].key[2] = key_i[2];
+		ref[h].key[3] = key_i[3];
+		ref[h].key[4] = key_i[4];
+		ref[h].key[5] = key_i[5];
+	}
 	data[h].pos.emplace_back(pos);
 }
 
