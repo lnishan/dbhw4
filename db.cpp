@@ -116,10 +116,13 @@ void db::import(const char filename[]){
 
 	read_sz = min(sz_left, RBUF_SIZE - 500);
 	fread(rbuf, 1, read_sz, fi);
-	fgets(s, 500, fi);
-	for (i = read_sz, j = 0; s[j]; ++i, ++j)
-		rbuf[i] = s[j];
-	rbuf[i] = 0;
+	if (fgets(s, 500, fi)) {
+		for (i = read_sz, j = 0; s[j]; ++i, ++j)
+			rbuf[i] = s[j];
+		rbuf[i] = 0;
+		read_sz += j;
+	} else
+		rbuf[read_sz] = 0;
 
 	for (i = 0; rbuf[i] != '\n'; ++i) ;
 	++i;
@@ -165,10 +168,13 @@ void db::import(const char filename[]){
 
 		read_sz = min(sz_left, RBUF_SIZE - 500);
 		fread(rbuf, 1, read_sz, fi);
-		fgets(s, 500, fi);
-		for (i = read_sz, j = 0; s[j]; ++i, ++j)
-			rbuf[i] = s[j];
-		rbuf[i] = 0;
+		if (fgets(s, 500, fi)) {
+			for (i = read_sz, j = 0; s[j]; ++i, ++j)
+				rbuf[i] = s[j];
+			rbuf[i] = 0;
+			read_sz += j;
+		} else
+			rbuf[read_sz] = 0;
 	}
 
 	wbuf[iter] = 0;
@@ -257,8 +263,8 @@ double db::query(const char ori[], const char dst[]){
 
 void db::cleanup(){
 	//Release memory, close files and anything you should do to clean up your db class.
-	FILE *fo = fopen(temp_dir, "w"); // empties the file
-	fclose(fo);
+	// FILE *fo = fopen(temp_dir, "w"); // empties the file
+	// fclose(fo);
 
 	delete [] wbuf;
 	delete [] rbuf;
