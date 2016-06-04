@@ -26,7 +26,7 @@ Data expo '09, *ASA Sections on Statistical Computing*
 * [2007.csv](http://stat-computing.org/dataexpo/2009/2007.csv.bz2)  
 * [2008.csv](http://stat-computing.org/dataexpo/2009/2008.csv.bz2)
 
-**2160486** rows, **29** columns
+**21604865** rows (21134119 valid), **29** columns
 
 
 ## Requirements
