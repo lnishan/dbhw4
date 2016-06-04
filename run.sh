@@ -1,10 +1,9 @@
 #! /bin/sh
 
-make
-make test_O2
-
 if [ "$1" = "O2" ]; then
 	
+	make test_O2
+
 	echo "#1"
 	./test_O2;
 	echo ""
@@ -34,7 +33,9 @@ if [ "$1" = "O2" ]; then
 	echo ""
 
 else
-	
+
+	make test
+
 	echo "#1"
 	./test;
 	echo ""

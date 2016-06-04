@@ -6,6 +6,7 @@
 *.stackdump
 *.exe.stackdump
 *.db
+*.txt
 
 # binaries
 a
