@@ -117,6 +117,9 @@ void db::import(const char filename[]){
 				wbuf[k] = '\n';
 				i = j - 1;
 				next_iter = k + 1;
+			} else {
+				next_iter = iter;
+				break;
 			}
 
 			for ( ; cnt != 16; ++i)
