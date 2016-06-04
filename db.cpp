@@ -198,8 +198,7 @@ void db::createIndex(){
 
 	read_sz = min(sz_left, RBUF_SIZE - 500);
 	fread(rbuf, 1, read_sz, fi);
-	fgets(s, 500, fi);
-	if (fgets(s, 500, fi)) {
+	if (fgets(s, 30, fi)) {
 		for (i = read_sz, j = 0; s[j]; ++i, ++j)
 			rbuf[i] = s[j];
 		rbuf[i] = 0;
@@ -217,8 +216,7 @@ void db::createIndex(){
 
 		read_sz = min(sz_left, RBUF_SIZE - 500);
 		fread(rbuf, 1, read_sz, fi);
-		fgets(s, 500, fi);
-		if (fgets(s, 500, fi)) {
+		if (fgets(s, 30, fi)) {
 			for (i = read_sz, j = 0; s[j]; ++i, ++j)
 				rbuf[i] = s[j];
 			rbuf[i] = 0;
@@ -266,26 +264,56 @@ double db::query(const char ori[], const char dst[]){
 		}
 	} else {
 		FILE *fi = fopen(temp_dir, "r");
-		char s[30];
+		char s[30], *ts;
 		long long sum = 0;
-		int i, delay, flights = 0;
-		while (fgets(s, 30, fi)) {
-			if (s[0] == '\n') continue;
-			if (s[0] == ori[0] && s[1] == ori[1] && s[2] == ori[2] &&
-					s[3] == dst[0] && s[4] == dst[1] && s[5] == dst[2]) {
-				if (s[6] == '-') {
-					delay = s[7] - 48;
-					for (i = 8; s[i] != '\n'; ++i)
-						delay = delay * 10 + s[i] - 48;
-					delay = -delay;
-				} else {
-					delay = s[6] - 48;
-					for (i = 7; s[i] != '\n'; ++i)
-						delay = delay * 10 + s[i] - 48;
+		int i, j, delay, flights = 0;
+		long sz, sz_left, read_sz;
+	
+		fseek(fi, 0, SEEK_END);
+		sz_left = sz = ftell(fi);
+		rewind(fi);
+		
+		read_sz = min(sz_left, RBUF_SIZE - 500);
+		fread(rbuf, 1, read_sz, fi);
+		if (fgets(s, 30, fi)) {
+			for (i = read_sz, j = 0; s[j]; ++i, ++j)
+				rbuf[i] = s[j];
+			rbuf[i] = 0;
+			read_sz += j;
+		} else
+			rbuf[read_sz] = 0;
+		for (i = 0; sz_left; i = 0) { 
+			for ( ; rbuf[i]; ++i) {
+				ts = rbuf + i;
+				if (ts[0] == ori[0] && ts[1] == ori[1] && ts[2] == ori[2] &&
+						ts[3] == dst[0] && ts[4] == dst[1] && ts[5] == dst[2]) {
+					if (ts[6] == '-') {
+						delay = ts[7] - 48;
+						for (j = 8; ts[j] != '\n'; ++j)
+							delay = delay * 10 + ts[j] - 48;
+						delay = -delay;
+					} else {
+						delay = ts[6] - 48;
+						for (j = 7; ts[j] != '\n'; ++j)
+							delay = delay * 10 + ts[j] - 48;
+					}
+					++flights;
+					sum += delay;
+					for ( ; rbuf[i] != '\n'; ++i) ;
 				}
-				++flights;
-				sum += delay;
 			}
+			sz_left -= read_sz;
+
+			read_sz = min(sz_left, RBUF_SIZE - 500);
+			fread(rbuf, 1, read_sz, fi);
+			if (fgets(s, 30, fi)) {
+				for (i = read_sz, j = 0; s[j]; ++i, ++j)
+					rbuf[i] = s[j];
+				rbuf[i] = 0;
+				read_sz += j;
+			} else
+				rbuf[read_sz] = 0;
+	
 		}
 		ret = (double)sum / flights;
 		fclose(fi);
