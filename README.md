@@ -18,26 +18,36 @@ SELECT AVG(ArrDelay) FROM ontime WHERE Origin = {QueryAirport1} AND Dest = {Quer
 ## Optimization approaches
 
 * A specialized and highly-optimized std::unordered\_map  
-➔ Simple Tabulation Hashing and Linear Probing  
+➔ Hash function: Simple tabulation hashing
+➔ Linear probing  
+
 * An extra-large write buffer  
 ➔ No need to write to the file before queries  
+
 * Compact and uniform file format  
-➔ Simple decoding to boost input effiency  
+➔ Simple decoding to boost input efficiency  
+
 * High reserves on std::vectors  
 ➔ Reduce the number of memory reallocations  
 ➔ Trade memory for speed  
-* Use predominantly the C library  
-➔ Some C++ STLs are incredibly slow, such as std::string and related I/O functions
+
+* Use C library  
+➔ Use the more efficient C library. 
+➔ Some C++ STLs are incredibly slow, especially std::string and related I/O functions
+
 * C++11 features  
 ➔ Use newer functions with underlying move semantics to prevent unnecessary data copying  
+
 * Reduction of branch instructions  
 ➔ Eliminate branch misprediction penalties  
+
 * Generally robust codes throughout
 
 
 ## Test results
 
-> 2:30 AM (UTC+8), June 4, 2016
+> **Date:** 2:30 AM (UTC+8), June 4, 2016
+> **Environment:** 1TB SSHD, 16GB RAM, i7-3770
 
 | # | Import | Indexing | Queries |
 | --- | --- | --- | --- | --- |
