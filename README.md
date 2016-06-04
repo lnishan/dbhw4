@@ -1,21 +1,34 @@
 # dbhw4
 
-[![Build Status](https://travis-ci.com/lnishan/dbhw4.svg?token=zyWYRz96q11zafMJcoGG&branch=master)](https://travis-ci.com/lnishan/dbhw4)
-
 Introduction to Database, Spring 2016. Assignment 4 (Final Project)
+
+[![Build Status](https://travis-ci.com/lnishan/dbhw4.svg?token=zyWYRz96q11zafMJcoGG&branch=master)](https://travis-ci.com/lnishan/dbhw4)
 
 ---
 
-The aim for this project is to implement an on-disk DBMS (Database Management System).
 
-We are asked to perform the following query on a set of .csv files:
+## Goals
+
+Implement an on-disk DBMS (Database Management System).
+
+Perform the following query on a set of .csv files:
 
 ```SQL
 SELECT AVG(ArrDelay) FROM ontime WHERE Origin = {QueryAirport1} AND Dest = {QueryAirport2};
 ```
 
 
-## Optimization approaches
+## Requirements
+
+* 2GB RAM
+* gcc 4.8.4
+* No custom makefiles
+* No parallelization
+* No pre-calculations
+* No data can be stored in memory before queries
+
+
+## Optimization Approaches
 
 * A specialized and highly-optimized std::unordered\_map  
 ➔ Hash function: Simple tabulation hashing
@@ -44,10 +57,10 @@ SELECT AVG(ArrDelay) FROM ontime WHERE Origin = {QueryAirport1} AND Dest = {Quer
 * Generally robust codes throughout
 
 
-## Test results
+## Test Results
 
 > **Date:** 2:30 AM (UTC+8), June 4, 2016  
-> **Environment:** 1TB SSHD, 16GB RAM, i7-3770
+> **Environment:** Cygwin-gcc 5.3.0 w/ 1TB SSHD, 16GB RAM, i7-3770
 
 | # | Import | Indexing | Queries |
 | --- | --- | --- | --- | --- |
