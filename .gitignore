@@ -6,6 +6,14 @@
 *.stackdump
 *.exe.stackdump
 *.db
+
+# binaries
+a
+res
 test
 test_O2
+
 .DS_Store
+
+# result file
+res.txt
