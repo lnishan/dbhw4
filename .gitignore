@@ -7,5 +7,5 @@
 *.exe.stackdump
 *.db
 test
-test_ans
+test_O2
 .DS_Store
