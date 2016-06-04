@@ -45,7 +45,7 @@ Data expo '09, *ASA Sections on Statistical Computing*
 ➔ Linear probing  
 
 * An extra-large read buffer  
-➔ Applicable to both import and indexing
+➔ Applicable to both import and indexing  
 ➔ Reduce system call overheads
 
 * An extra-large write buffer  
