@@ -5,12 +5,6 @@
 #include <random>
 #include <algorithm>
 
-#ifndef WBUF_SIZE
-
-#define WBUF_SIZE 100000000
-
-#endif
-
 class umap_t {
 	friend class umap;
 	private:
@@ -53,7 +47,11 @@ class umap {
 
 class db{
 	private:
+		long WBUF_SIZE = 100000000;
+		long RBUF_SIZE = 200000000; // change to 4 * 10^8
+
 		char *wbuf;
+		char *rbuf;
 		int iter;
 
 		char indexed;

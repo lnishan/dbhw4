@@ -1,5 +1,7 @@
 #include "db.h"
 
+using std::min;
+
 int umap::TB_BITS = 16;
 int umap::TB_SIZE = 1 << TB_BITS;
 int umap::TB_MASK = TB_SIZE - 1;
@@ -86,6 +88,7 @@ inline int umap::hash(const char key_i[6]) {
 void db::init(){
 	//Do your db initialization.
 	wbuf = new char[WBUF_SIZE];
+	rbuf = new char[RBUF_SIZE];
 	iter = 0;
 	indexed = 0;
 }
@@ -102,42 +105,69 @@ void db::import(const char filename[]){
 	//Inport a csv file to your database.
 	FILE *fi = fopen(filename, "r");
 	FILE *fo = fopen(temp_dir, "a");
-	int i, j, k, cnt;
-	char s[500], sout[20];
+	int i, j, k, l, cnt;
+	char s[500];
 	int next_iter;
+	long sz, sz_left, read_sz;
+
+	fseek(fi, 0, SEEK_END);
+	sz_left = sz = ftell(fi);
+	rewind(fi);
+
+	read_sz = min(sz_left, RBUF_SIZE - 500);
+	fread(rbuf, 1, read_sz, fi);
 	fgets(s, 500, fi);
-	while (fgets(s, 500, fi)) {
+	for (i = read_sz, j = 0; s[j]; ++i, ++j)
+		rbuf[i] = s[j];
+	rbuf[i] = 0;
+	
+	for (i = 0; rbuf[i] != '\n'; ++i) ;
+	
+for ( ; sz_left; i = 0) {
+	for ( ; rbuf[i]; ) {
 		cnt = 0;
-		for (i = 0; s[i]; ++i) {
-			for ( ; cnt != 14; ++i)
-				if (s[i] == ',') ++cnt;
-			if (s[i] != 'N' && s[i] != ',') { // NA, Empty
-				for (j = i, k = iter + 6; s[j] != ','; ++j, ++k)
-					wbuf[k] = s[j];
-				wbuf[k] = '\n';
-				i = j - 1;
-				next_iter = k + 1;
-			} else {
-				next_iter = iter;
-				break;
-			}
-
-			for ( ; cnt != 16; ++i)
-				if (s[i] == ',') ++cnt;
-			wbuf[iter    ] = s[i    ];
-			wbuf[iter + 1] = s[i + 1];
-			wbuf[iter + 2] = s[i + 2];
-			i += 3;
-
-			for ( ; cnt != 17; ++i)
-				if (s[i] == ',') ++cnt;
-			wbuf[iter + 3] = s[i    ];
-			wbuf[iter + 4] = s[i + 1];
-			wbuf[iter + 5] = s[i + 2];
-			break;
+		for ( ; cnt != 14; ++i)
+			if (rbuf[i] == ',') ++cnt;
+		if (rbuf[i] != 'N' && rbuf[i] != ',') { // NA, Empty
+			for (j = i, k = iter + 6; rbuf[j] != ','; ++j, ++k)
+				wbuf[k] = rbuf[j];
+			wbuf[k] = '\n';
+			i = j - 1;
+			next_iter = k + 1;
+		} else {
+			next_iter = iter;
+			continue;
 		}
+
+		for ( ; cnt != 16; ++i)
+			if (rbuf[i] == ',') ++cnt;
+		wbuf[iter    ] = rbuf[i    ];
+		wbuf[iter + 1] = rbuf[i + 1];
+		wbuf[iter + 2] = rbuf[i + 2];
+		i += 3;
+
+		for ( ; cnt != 17; ++i)
+			if (rbuf[i] == ',') ++cnt;
+		wbuf[iter + 3] = rbuf[i    ];
+		wbuf[iter + 4] = rbuf[i + 1];
+		wbuf[iter + 5] = rbuf[i + 2];
+
+		for ( ; rbuf[i] != '\n'; ++i) ;
+		++i;
+
 		iter = next_iter;
 	}
+	
+	sz_left -= read_sz;
+	
+	read_sz = min(sz_left, RBUF_SIZE - 500);
+	fread(rbuf, 1, read_sz, fi);
+	fgets(s, 500, fi);
+	for (i = read_sz, j = 0; s[j]; ++i, ++j)
+		rbuf[i] = s[j];
+	rbuf[i] = 0;
+}
+
 	wbuf[iter] = 0;
 	fputs(wbuf, fo);
 	iter = 0;
@@ -224,10 +254,11 @@ double db::query(const char ori[], const char dst[]){
 
 void db::cleanup(){
 	//Release memory, close files and anything you should do to clean up your db class.
-	FILE *fo = fopen(temp_dir, "w"); // empties the file
-	fclose(fo);
+	// FILE *fo = fopen(temp_dir, "w"); // empties the file
+	// fclose(fo);
 
 	delete [] wbuf;
+	delete [] rbuf;
 }
 
 inline void db::flushWbuf(FILE *fo) {
