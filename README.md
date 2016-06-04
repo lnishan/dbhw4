@@ -18,6 +18,15 @@ SELECT AVG(ArrDelay) FROM ontime WHERE Origin = {QueryAirport1} AND Dest = {Quer
 ```
 
 
+## Datasets
+
+Data expo '09, *ASA Sections on Statistical Computing* 
+
+[2006.csv](http://stat-computing.org/dataexpo/2009/2006.csv.bz2)  
+[2007.csv](http://stat-computing.org/dataexpo/2009/2007.csv.bz2)  
+[2008.csv](http://stat-computing.org/dataexpo/2009/2008.csv.bz2)
+
+
 ## Requirements
 
 * 2GB RAM
@@ -28,10 +37,10 @@ SELECT AVG(ArrDelay) FROM ontime WHERE Origin = {QueryAirport1} AND Dest = {Quer
 * No data can be stored in memory before queries
 
 
-## Optimization Approaches
+## Optimizations
 
-* A specialized and highly-optimized std::unordered\_map  
-➔ Hash function: Simple tabulation hashing
+* A specialized and highly-optimized hash map  
+➔ Simple tabulation hashing  
 ➔ Linear probing  
 
 * An extra-large write buffer  
@@ -44,8 +53,8 @@ SELECT AVG(ArrDelay) FROM ontime WHERE Origin = {QueryAirport1} AND Dest = {Quer
 ➔ Reduce the number of memory reallocations  
 ➔ Trade memory for speed  
 
-* Use C library  
-➔ Use the more efficient C library. 
+* Use mostly C library  
+➔ C library is oftentimes more efficient.  
 ➔ Some C++ STLs are incredibly slow, especially std::string and related I/O functions
 
 * C++11 features  
@@ -58,6 +67,16 @@ SELECT AVG(ArrDelay) FROM ontime WHERE Origin = {QueryAirport1} AND Dest = {Quer
 
 
 ## Test Results
+
+### Queries
+
+```cpp
+double result1 = mydb.query("IAH", "JFK");
+double result2 = mydb.query("IAH", "LAX");
+double result3 = mydb.query("JFK", "LAX");
+double result4 = mydb.query("JFK", "IAH");
+double result5 = mydb.query("LAX", "IAH");
+```
 
 > **Date:** 2:30 AM (UTC+8), June 4, 2016  
 > **Environment:** Cygwin-gcc 5.3.0 w/ 1TB SSHD, 16GB RAM, i7-3770
