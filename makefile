@@ -12,3 +12,4 @@ res: res.cpp
 clean:
 	rm test
 	rm test_O2
+	rm res
