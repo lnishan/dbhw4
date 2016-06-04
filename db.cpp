@@ -199,28 +199,32 @@ void db::createIndex(){
 	read_sz = min(sz_left, RBUF_SIZE - 500);
 	fread(rbuf, 1, read_sz, fi);
 	fgets(s, 500, fi);
-	for (i = read_sz, j = 0; s[j]; ++i, ++j)
-		rbuf[i] = s[j];
-	rbuf[i] = 0;
-
+	if (fgets(s, 500, fi)) {
+		for (i = read_sz, j = 0; s[j]; ++i, ++j)
+			rbuf[i] = s[j];
+		rbuf[i] = 0;
+		read_sz += j;
+	} else
+		rbuf[read_sz] = 0;
+	
 	for (i = 0, pos_base = 0; sz_left; i = 0) { 
 		for ( ; rbuf[i]; ++i) {
-			// mp.insert((&rbuf[i]), pos_base + i);
+			mp.insert((&rbuf[i]), pos_base + i);
 			for ( ; rbuf[i] != '\n'; ++i) ;
-			++i;
 		}
 		sz_left -= read_sz;
 		pos_base += read_sz;
 
-		puts("hi");
 		read_sz = min(sz_left, RBUF_SIZE - 500);
-		if (read_sz) {
-			fread(rbuf, 1, read_sz, fi);
-			fgets(s, 500, fi);
+		fread(rbuf, 1, read_sz, fi);
+		fgets(s, 500, fi);
+		if (fgets(s, 500, fi)) {
 			for (i = read_sz, j = 0; s[j]; ++i, ++j)
 				rbuf[i] = s[j];
 			rbuf[i] = 0;
-		}
+			read_sz += j;
+		} else
+			rbuf[read_sz] = 0;
 	}
 
 	fclose(fi);
@@ -291,8 +295,8 @@ double db::query(const char ori[], const char dst[]){
 
 void db::cleanup(){
 	//Release memory, close files and anything you should do to clean up your db class.
-	// FILE *fo = fopen(temp_dir, "w"); // empties the file
-	// fclose(fo);
+	FILE *fo = fopen(temp_dir, "w"); // empties the file
+	fclose(fo);
 
 	delete [] wbuf;
 	delete [] rbuf;
