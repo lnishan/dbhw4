@@ -26,13 +26,12 @@ Data expo '09, *ASA Sections on Statistical Computing*
 * [2007.csv](http://stat-computing.org/dataexpo/2009/2007.csv.bz2)  
 * [2008.csv](http://stat-computing.org/dataexpo/2009/2008.csv.bz2)
 
-`2160486` rows, `29` columns
+**2160486** rows, **29** columns
 
 
 ## Requirements
 
-* 2GB RAM
-* gcc 4.8.4
+* Test Environment: 2GB RAM, gcc 4.8.4, Ubuntu 14.04 LTS
 * No custom makefiles
 * No parallelization
 * No pre-calculations
@@ -46,6 +45,7 @@ Data expo '09, *ASA Sections on Statistical Computing*
 ➔ Linear probing  
 
 * An extra-large read buffer  
+➔ Applicable to both import and indexing
 ➔ Reduce system call overheads
 
 * An extra-large write buffer  
@@ -86,33 +86,47 @@ double result5 = mydb.query("LAX", "IAH");
 
 ---
 
-> **Date:** 10:00 PM (UTC+8), June 4, 2016  
-> **Hardware:** 16GB Persistent Disk, 3.75GB RAM, 2.5GHz Xeon E5 v2 (Google Compute Engine n1-standard-1)  
+> **Date:** 3:30 AM (UTC+8), June 5, 2016  
+> **Hardware:** 16GB SSD, 3.75GB RAM, 2.5GHz Xeon E5 v2 (Google Compute Engine n1-standard-1)  
 > **Environment:** gcc 5.3.1, Ubuntu 16.04 LTS
 
-| # | Import | Indexing | Dry-Queries | Queries |
+| # | Import | Dry-Queries | Indexing | Queries |
 | --- | --- | --- | --- | --- |
-| 1 | 7.6948 | 3.9534 | 3.3412 | 0.0128 |
-| 2 | 6.7874 | 4.0147 | 3.3852 | 0.0130 |
-| 3 | 6.4664 | 3.9750 | 3.3857 | 0.0128 |
-| 4 | 6.2885 | 3.9403 | 3.3141 | 0.0129 |
-| 5 | 6.3292 | 3.9159 | 3.3592 | 0.0129 |
-| **Avg.** | **6.71326** | **3.95986** | **3.35708** | **0.01288** |
+| 1 | 6.7414 | 3.2953 | 2.2090 | 0.0140 |
+| 2 | 6.9793 | 3.2584 | 2.1799 | 0.0127 |
+| 3 | 6.5395 | 3.2409 | 2.1548 | 0.0127 |
+| 4 | 6.4859 | 3.2570 | 2.1941 | 0.0128 |
+| 5 | 7.0782 | 3.3148 | 2.2021 | 0.0135 |
+| **Avg.** | **6.76486** | **3.27328** | **2.18798** | **0.01314** |
 
 ---
 
-> **Date:** 10:00 PM (UTC+8), June 4, 2016  
+> **Date:** 3:30 AM (UTC+8), June 5, 2016  
 > **Hardware:** 1TB SSHD, 16GB RAM, i7-3770  
-> **Environment:** Cygwin-gcc 5.3.0, Windows 10 Enterprise 64-bit
+> **Environment:** Cygwin-gcc 5.3.0, Windows 10 Enterprise 64-bit (Desktop)
 
-| # | Import | Indexing | Dry-Queries | Queries |
+| # | Import | Dry-Queries | Indexing | Queries |
 | --- | --- | --- | --- | --- |
-| 1 | 5.0160 | 4.5470 | 10.3590 | 0.0320 |
-| 2 | 5.0470 | 4.5480 | 10.3740 | 0.0150 |
-| 3 | 5.0470 | 4.5620 | 10.3280 | 0.0320 |
-| 4 | 5.0930 | 4.5620 | 10.3760 | 0.0160 |
-| 5 | 5.0160 | 4.5630 | 10.3900 | 0.0150 |
-| **Avg.** | **5.04380** | **4.55640** | **10.36540** | **0.02200** |
+| 1 | 5.2660 | 2.6250 | 1.4840 | 0.0160 |
+| 2 | 5.2500 | 2.6100 | 1.4680 | 0.0160 |
+| 3 | 5.2030 | 2.6090 | 1.4840 | 0.0160 |
+| 4 | 5.1880 | 2.6090 | 1.4840 | 0.0160 |
+| 5 | 5.1880 | 2.6240 | 1.4700 | 0.0300 |
+| **Avg.** | **5.21900** | **2.61540** | **1.47800** | **0.01880** |
 
 ---
 
+> **Date:** 3:30 AM (UTC+8), June 5, 2016  
+> **Hardware:** 256GB SSD, 16GB RAM, i5-4260U  
+> **Environment:** gcc 5.3.0, OS X El Capitan (MacBook Air Early 2014)
+
+| # | Import | Dry-Queries | Indexing | Queries |
+| --- | --- | --- | --- | --- |
+| 1 | 7.8163 | 3.8534 | 2.5339 | 0.0248 |
+| 2 | 7.8578 | 3.7656 | 2.4520 | 0.0250 |
+| 3 | 7.8902 | 3.8387 | 2.4401 | 0.0250 |
+| 4 | 7.9061 | 3.7831 | 2.4521 | 0.0302 |
+| 5 | 7.8536 | 3.7653 | 2.4195 | 0.0286 |
+| **Avg.** | **7.86480** | **3.80122** | **2.45952** | **0.02672** |
+
+---
