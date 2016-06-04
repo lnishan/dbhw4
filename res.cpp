@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 	freopen(file, "r", stdin);
 	freopen("res.txt", "w", stdout);
 
-	puts("| # | Import | Indexing | Dry-Queries | Queries |");
+	puts("| # | Import | Dry-Queries | Indexing | Queries |");
 	puts("| --- | --- | --- | --- | --- |");
 
 	for (i = 0; i < 5; i++)

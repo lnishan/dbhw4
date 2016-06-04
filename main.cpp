@@ -30,13 +30,13 @@ int main(int argc, char* argv[]){
 	double noidx_result4 = mydb.query("JFK", "IAH");
 	double noidx_result5 = mydb.query("LAX", "IAH");
 	double noidx_query_time = (double)(clock() - tNoIdxQuery) / CLOCKS_PER_SEC;
-	printf("Time taken for indexing: %.4fs\n", index_time);
+	printf("Time taken for queries (pre-indexing): %.4fs\n", noidx_query_time);
 	
 	//Create index on one or two columns.
 	clock_t tIndex = clock();
 	mydb.createIndex();
 	double index_time = (double)(clock() - tIndex) / CLOCKS_PER_SEC;
-	printf("Time taken for queries (pre-indexing): %.4fs\n", noidx_query_time);
+	printf("Time taken for indexing: %.4fs\n", index_time);
 
 	//Do queries
 	//These queries are required in your report.
