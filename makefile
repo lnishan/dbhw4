@@ -1,5 +1,5 @@
 .PHONY: clean
-all: test
+all: test test_O2
 test: main.cpp db.cpp db.h
 	g++ -std=c++11 main.cpp db.cpp -o test
 
