@@ -135,6 +135,8 @@ for ( ; sz_left; i = 0) {
 			i = j - 1;
 			next_iter = k + 1;
 		} else {
+			while (rbuf[i] != '\n') ++i;
+			++i;
 			next_iter = iter;
 			continue;
 		}
@@ -152,7 +154,7 @@ for ( ; sz_left; i = 0) {
 		wbuf[iter + 4] = rbuf[i + 1];
 		wbuf[iter + 5] = rbuf[i + 2];
 
-		for ( ; rbuf[i] != '\n'; ++i) ;
+		while (rbuf[i] != '\n') ++i;
 		++i;
 
 		iter = next_iter;
