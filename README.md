@@ -46,7 +46,7 @@ SELECT AVG(ArrDelay) FROM ontime WHERE Origin = {QueryAirport1} AND Dest = {Quer
 
 ## Test results
 
-> **Date:** 2:30 AM (UTC+8), June 4, 2016
+> **Date:** 2:30 AM (UTC+8), June 4, 2016  
 > **Environment:** 1TB SSHD, 16GB RAM, i7-3770
 
 | # | Import | Indexing | Queries |
