@@ -1,4 +1,4 @@
-#!/bin/sh
+#! /bin/sh
 
 make
 make O2
