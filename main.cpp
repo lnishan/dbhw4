@@ -49,11 +49,13 @@ int main(int argc, char* argv[]){
 	//End timing
 	double query_time = (double)(clock() - tQuery) / CLOCKS_PER_SEC;
 	
-	printf("Results (Pre-indexing): %.4f %.4f %.4f %.4f %.4f\n", noidx_result1, noidx_result2, noidx_result3, noidx_result4, noidx_result5);
+	printf("Results (pre-indexing): %.4f %.4f %.4f %.4f %.4f\n", noidx_result1, noidx_result2, noidx_result3, noidx_result4, noidx_result5);
 	printf("Results: %.4f %.4f %.4f %.4f %.4f\n", result1, result2, result3, result4, result5);
-	printf("Time taken for import: %.3fs\n", import_time);
-	printf("Time taken for indexing: %.3fs\n", index_time);
-	printf("Time taken for queries: %.3fs\n", query_time);
+	
+	printf("Time taken for import: %.4fs\n", import_time);
+	printf("Time taken for indexing: %.4fs\n", index_time);
+	printf("Time taken for queries (pre-indexing): %.4fs\n", noidx_query_time);
+	printf("Time taken for queries: %.4fs\n", query_time);
 
 	//Cleanup db object
 	mydb.cleanup();
