@@ -86,8 +86,23 @@ double result5 = mydb.query("LAX", "IAH");
 
 ---
 
+> **Date:** 5:40 AM (UTC+8), June 5, 2016  
+> **Hardware:** 50GB Vmware Disk, 4GB RAM, 1 vCore (Guest VM, Host: 1TB SSHD, 16GB RAM, i7-3770)  
+> **Environment:** gcc 5.2.1, Kubuntu 15.10
+
+| # | Import | Dry-Queries | Indexing | Queries |
+| --- | --- | --- | --- | --- |
+| 1 | 5.8173 | 2.5544 | 1.7140 | 0.0104 |
+| 2 | 5.2027 | 2.5456 | 1.7087 | 0.0104 |
+| 3 | 5.1647 | 2.5675 | 1.7243 | 0.0106 |
+| 4 | 5.1151 | 2.5649 | 1.7438 | 0.0107 |
+| 5 | 5.0954 | 2.5640 | 1.7036 | 0.0104 |
+| **Avg.** | **5.27904** | **2.55928** | **1.71888** | **0.01050** |
+
+---
+
 > **Date:** 3:30 AM (UTC+8), June 5, 2016  
-> **Hardware:** 16GB SSD, 3.75GB RAM, 2.5GHz Xeon E5 v2 (Google Compute Engine n1-standard-1)  
+> **Hardware:** 16GB Persistent Disk, 3.75GB RAM, 1 HyperThread on 2.5GHz Xeon E5 v2 (Google Compute Engine n1-standard-1)  
 > **Environment:** gcc 5.3.1, Ubuntu 16.04 LTS
 
 | # | Import | Dry-Queries | Indexing | Queries |
@@ -102,8 +117,8 @@ double result5 = mydb.query("LAX", "IAH");
 ---
 
 > **Date:** 3:30 AM (UTC+8), June 5, 2016  
-> **Hardware:** 1TB SSHD, 16GB RAM, i7-3770  
-> **Environment:** Cygwin-gcc 5.3.0, Windows 10 Enterprise 64-bit (Desktop)
+> **Hardware:** 1TB SSHD, 16GB RAM, i7-3770 (Desktop)  
+> **Environment:** Cygwin-gcc 5.3.0, Windows 10 Enterprise 64-bit
 
 | # | Import | Dry-Queries | Indexing | Queries |
 | --- | --- | --- | --- | --- |
@@ -117,8 +132,8 @@ double result5 = mydb.query("LAX", "IAH");
 ---
 
 > **Date:** 3:30 AM (UTC+8), June 5, 2016  
-> **Hardware:** 256GB SSD, 16GB RAM, i5-4260U  
-> **Environment:** gcc 5.3.0, OS X El Capitan (MacBook Air Early 2014)
+> **Hardware:** 256GB SSD, 16GB RAM, i5-4260U (MacBook Air Early 2014)  
+> **Environment:** gcc 5.3.0, OS X El Capitan
 
 | # | Import | Dry-Queries | Indexing | Queries |
 | --- | --- | --- | --- | --- |
