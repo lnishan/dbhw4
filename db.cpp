@@ -120,55 +120,56 @@ void db::import(const char filename[]){
 	for (i = read_sz, j = 0; s[j]; ++i, ++j)
 		rbuf[i] = s[j];
 	rbuf[i] = 0;
-	
+
 	for (i = 0; rbuf[i] != '\n'; ++i) ;
-	
-for ( ; sz_left; i = 0) {
-	for ( ; rbuf[i]; ) {
-		cnt = 0;
-		for ( ; cnt != 14; ++i)
-			if (rbuf[i] == ',') ++cnt;
-		if (rbuf[i] != 'N' && rbuf[i] != ',') { // NA, Empty
-			for (j = i, k = iter + 6; rbuf[j] != ','; ++j, ++k)
-				wbuf[k] = rbuf[j];
-			wbuf[k] = '\n';
-			i = j - 1;
-			next_iter = k + 1;
-		} else {
+	++i;
+
+	for ( ; sz_left; i = 0) {
+		for ( ; rbuf[i]; ) {
+			cnt = 0;
+			for ( ; cnt != 14; ++i)
+				if (rbuf[i] == ',') ++cnt;
+			if (rbuf[i] != 'N' && rbuf[i] != ',') { // NA, Empty
+				for (j = i, k = iter + 6; rbuf[j] != ','; ++j, ++k)
+					wbuf[k] = rbuf[j];
+				wbuf[k] = '\n';
+				i = j - 1;
+				next_iter = k + 1;
+			} else {
+				while (rbuf[i] != '\n') ++i;
+				++i;
+				next_iter = iter;
+				continue;
+			}
+
+			for ( ; cnt != 16; ++i)
+				if (rbuf[i] == ',') ++cnt;
+			wbuf[iter    ] = rbuf[i    ];
+			wbuf[iter + 1] = rbuf[i + 1];
+			wbuf[iter + 2] = rbuf[i + 2];
+			i += 3;
+
+			for ( ; cnt != 17; ++i)
+				if (rbuf[i] == ',') ++cnt;
+			wbuf[iter + 3] = rbuf[i    ];
+			wbuf[iter + 4] = rbuf[i + 1];
+			wbuf[iter + 5] = rbuf[i + 2];
+
 			while (rbuf[i] != '\n') ++i;
 			++i;
-			next_iter = iter;
-			continue;
+
+			iter = next_iter;
 		}
 
-		for ( ; cnt != 16; ++i)
-			if (rbuf[i] == ',') ++cnt;
-		wbuf[iter    ] = rbuf[i    ];
-		wbuf[iter + 1] = rbuf[i + 1];
-		wbuf[iter + 2] = rbuf[i + 2];
-		i += 3;
+		sz_left -= read_sz;
 
-		for ( ; cnt != 17; ++i)
-			if (rbuf[i] == ',') ++cnt;
-		wbuf[iter + 3] = rbuf[i    ];
-		wbuf[iter + 4] = rbuf[i + 1];
-		wbuf[iter + 5] = rbuf[i + 2];
-
-		while (rbuf[i] != '\n') ++i;
-		++i;
-
-		iter = next_iter;
+		read_sz = min(sz_left, RBUF_SIZE - 500);
+		fread(rbuf, 1, read_sz, fi);
+		fgets(s, 500, fi);
+		for (i = read_sz, j = 0; s[j]; ++i, ++j)
+			rbuf[i] = s[j];
+		rbuf[i] = 0;
 	}
-	
-	sz_left -= read_sz;
-	
-	read_sz = min(sz_left, RBUF_SIZE - 500);
-	fread(rbuf, 1, read_sz, fi);
-	fgets(s, 500, fi);
-	for (i = read_sz, j = 0; s[j]; ++i, ++j)
-		rbuf[i] = s[j];
-	rbuf[i] = 0;
-}
 
 	wbuf[iter] = 0;
 	fputs(wbuf, fo);
@@ -256,8 +257,8 @@ double db::query(const char ori[], const char dst[]){
 
 void db::cleanup(){
 	//Release memory, close files and anything you should do to clean up your db class.
-	// FILE *fo = fopen(temp_dir, "w"); // empties the file
-	// fclose(fo);
+	FILE *fo = fopen(temp_dir, "w"); // empties the file
+	fclose(fo);
 
 	delete [] wbuf;
 	delete [] rbuf;
