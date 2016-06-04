@@ -188,13 +188,41 @@ void db::import(const char filename[]){
 void db::createIndex(){
 	//Create index.
 	FILE *fi = fopen(temp_dir, "r");
-	long pos = ftell(fi);
+	int i, j;
 	char s[30];
-	while (fgets(s, 30, fi)) {
-		if (s[0] == '\n') continue;
-		mp.insert(s, pos);
-		pos = ftell(fi);
+	long sz, sz_left, read_sz, pos_base;
+
+	fseek(fi, 0, SEEK_END);
+	sz_left = sz = ftell(fi);
+	rewind(fi);
+
+	read_sz = min(sz_left, RBUF_SIZE - 500);
+	fread(rbuf, 1, read_sz, fi);
+	fgets(s, 500, fi);
+	for (i = read_sz, j = 0; s[j]; ++i, ++j)
+		rbuf[i] = s[j];
+	rbuf[i] = 0;
+
+	for (i = 0, pos_base = 0; sz_left; i = 0) { 
+		for ( ; rbuf[i]; ++i) {
+			// mp.insert((&rbuf[i]), pos_base + i);
+			for ( ; rbuf[i] != '\n'; ++i) ;
+			++i;
+		}
+		sz_left -= read_sz;
+		pos_base += read_sz;
+
+		puts("hi");
+		read_sz = min(sz_left, RBUF_SIZE - 500);
+		if (read_sz) {
+			fread(rbuf, 1, read_sz, fi);
+			fgets(s, 500, fi);
+			for (i = read_sz, j = 0; s[j]; ++i, ++j)
+				rbuf[i] = s[j];
+			rbuf[i] = 0;
+		}
 	}
+
 	fclose(fi);
 	indexed = 1;
 }
