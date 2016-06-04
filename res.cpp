@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 	if (argc >= 2) {
 		freopen(argv[1], "r", stdin);
 	}
-	freopen("res.txt", "w", stdout);
+	// freopen("res.txt", "w", stdout);
 
 	puts("| # | Import | Dry-Queries | Indexing | Queries |");
 	puts("| --- | --- | --- | --- | --- |");
