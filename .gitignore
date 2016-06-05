@@ -7,13 +7,6 @@
 *.db
 *.txt
 
-# Codeblocks
-bin/
-obj/
-*.cbp
-*.depend
-*.layout
-
 # Binaries
 *.out
 *.exe
@@ -26,3 +19,18 @@ test*
 .DS_Store
 *.stackdump
 *.exe.stackdump
+
+# Codeblocks
+bin/
+obj/
+*.cbp
+*.depend
+*.layout
+
+# Visual Studio
+.vs/
+Debug/
+Release/
+*.vcxproj
+*.vcxproj.filters
+*.sln
