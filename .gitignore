@@ -1,20 +1,28 @@
+# Datasets
 *.bz2
 *.csv
-*.out
-*.exe
 *.swp
-*.stackdump
-*.exe.stackdump
+
+# Intermediate files
 *.db
 *.txt
 
-# binaries
+# Codeblocks
+bin/
+obj/
+*.cbp
+*.depend
+*.layout
+
+# Binaries
+*.out
+*.exe
 a
 res
 test
 test_O2
 
+# Garbage
 .DS_Store
-
-# result file
-res.txt
+*.stackdump
+*.exe.stackdump
