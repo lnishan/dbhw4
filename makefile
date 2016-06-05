@@ -19,9 +19,9 @@ res: res.cpp
 	g++ res.cpp -o res
 
 clean:
-	rm test
-	rm test_O0
-	rm test_O1
-	rm test_O2
-	rm test_O3
-	rm res
+	rm test || true
+	rm test_O0 || true
+	rm test_O1 || true
+	rm test_O2 || true
+	rm test_O3 || true
+	rm res || true
