@@ -38,8 +38,8 @@ umap::umap(): distribution(0, TB_SIZE - 1) {
 	data.resize(TB_SIZE);
 	ref.resize(TB_SIZE);
 	int i, j;
-	for (i = 0; i < 6; i++)
-		for (j = 0; j < 128; j++)
+	for (i = 0; i < 6; ++i)
+		for (j = 0; j < 128; ++j)
 			hash_ref[i][j] = distribution(generator);
 }
 
@@ -196,7 +196,7 @@ void db::createIndex(){
 	sz_left = sz = ftell(fi);
 	rewind(fi);
 
-	read_sz = min(sz_left, RBUF_SIZE - 500);
+	read_sz = min(sz_left, RBUF_SIZE - 30);
 	fread(rbuf, 1, read_sz, fi);
 	if (fgets(s, 30, fi)) {
 		for (i = read_sz, j = 0; s[j]; ++i, ++j)
@@ -214,7 +214,7 @@ void db::createIndex(){
 		sz_left -= read_sz;
 		pos_base += read_sz;
 
-		read_sz = min(sz_left, RBUF_SIZE - 500);
+		read_sz = min(sz_left, RBUF_SIZE - 30);
 		fread(rbuf, 1, read_sz, fi);
 		if (fgets(s, 30, fi)) {
 			for (i = read_sz, j = 0; s[j]; ++i, ++j)
@@ -273,7 +273,7 @@ double db::query(const char ori[], const char dst[]){
 		sz_left = sz = ftell(fi);
 		rewind(fi);
 		
-		read_sz = min(sz_left, RBUF_SIZE - 500);
+		read_sz = min(sz_left, RBUF_SIZE - 30);
 		fread(rbuf, 1, read_sz, fi);
 		if (fgets(s, 30, fi)) {
 			for (i = read_sz, j = 0; s[j]; ++i, ++j)
@@ -304,7 +304,7 @@ double db::query(const char ori[], const char dst[]){
 			}
 			sz_left -= read_sz;
 
-			read_sz = min(sz_left, RBUF_SIZE - 500);
+			read_sz = min(sz_left, RBUF_SIZE - 30);
 			fread(rbuf, 1, read_sz, fi);
 			if (fgets(s, 30, fi)) {
 				for (i = read_sz, j = 0; s[j]; ++i, ++j)
@@ -330,7 +330,3 @@ void db::cleanup(){
 	delete [] rbuf;
 }
 
-inline void db::flushWbuf(FILE *fo) {
-	fputs(wbuf, fo);
-	iter = 0;
-}

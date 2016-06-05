@@ -48,7 +48,7 @@ class umap {
 class db{
 	private:
 		long WBUF_SIZE = 100000000;
-		long RBUF_SIZE = 200000000; // change to 4 * 10^8
+		long RBUF_SIZE = 200000000;
 
 		char *wbuf;
 		char *rbuf;
@@ -72,7 +72,5 @@ class db{
 
 		void cleanup();                                  //Release memory, close files and anything you should do to clean up your db class.
 
-
-		inline void flushWbuf(FILE *);
 
 };
