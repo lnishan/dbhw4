@@ -104,7 +104,7 @@ void db::setTempFileDir(const char dir[15]){
 void db::import(const char filename[]){
 	//Inport a csv file to your database.
 	FILE *fi = fopen(filename, "r");
-	FILE *fo = fopen(temp_dir, "a");
+	FILE *fo = fopen(temp_dir, "ab");
 	int i, j, k, l, cnt;
 	char s[500];
 	int next_iter;
@@ -187,7 +187,7 @@ void db::import(const char filename[]){
 
 void db::createIndex(){
 	//Create index.
-	FILE *fi = fopen(temp_dir, "r");
+	FILE *fi = fopen(temp_dir, "rb");
 	int i, j;
 	char s[30];
 	long sz, sz_left, read_sz, pos_base;
@@ -240,7 +240,7 @@ double db::query(const char ori[], const char dst[]){
 		if (it == NULL) // Not found
 			ret = 0.0;
 		else {
-			FILE * fi = fopen(temp_dir, "r");
+			FILE * fi = fopen(temp_dir, "rb");
 			char s[30];
 			long long sum = 0;
 			int i, delay;
