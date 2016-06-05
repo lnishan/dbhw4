@@ -9,11 +9,11 @@ Introduction to Database, Spring 2016. Assignment 4 (Final Project)
 
 ## Goals
 
-Implement an on-disk DBMS (Database Management System).
+Implement an on-disk DBMS (Database Management System)
 
 Perform the following query on a set of .csv files:
 
-```SQL
+```sql
 SELECT AVG(ArrDelay) FROM ontime WHERE Origin = {QueryAirport1} AND Dest = {QueryAirport2};
 ```
 
@@ -38,6 +38,36 @@ Data expo '09, *ASA Sections on Statistical Computing*
 * No data can be stored in memory before queries
 
 
+## Installation
+
+Dependencies: 
+
+* g++ 4.8.4 or newer  
+* make
+
+Tested on Windows, Mac OSX, Ubuntu and FreeBSD
+
+```bash
+# Clone the repo
+git clone https://github.com/lnishan/dbhw4.git
+cd dbhw4
+
+# Download dataset
+# Prerequisites: wget, bzip2
+./download.sh
+
+# Build and run
+# O0 - O3 are all supported
+# O0, if no argument is passed in
+./run.sh O2
+
+# Build, run and organize results
+# O0 - O3 are all supported
+# O0, if no argument is passed in
+./test.sh O2
+```
+
+
 ## Optimizations
 
 * A specialized and highly-optimized hash map  
@@ -60,7 +90,7 @@ Data expo '09, *ASA Sections on Statistical Computing*
 ➔ Trade memory for speed  
 
 * Use mostly C library  
-➔ C library is oftentimes more efficient.  
+➔ C library is oftentimes more efficient  
 ➔ Some C++ STLs are incredibly slow, especially std::string and related I/O functions
 
 * C++11 features  
