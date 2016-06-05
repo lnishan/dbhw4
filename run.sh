@@ -3,66 +3,70 @@
 if [ "$1" = "O2" ]; then
 	
 	make test_O2
-
-	echo "#1"
-	./test_O2;
-	echo ""
 	
-	sleep 20;
+	if [ $? -eq 0 ]; then
+		echo "#1"
+		./test_O2;
+		echo ""
+		
+		sleep 20;
+		
+		echo "#2"
+		./test_O2;
+		echo ""
+		
+		sleep 20;
 	
-	echo "#2"
-	./test_O2;
-	echo ""
+		echo "#3"
+		./test_O2;
+		echo ""
+		
+		sleep 20;
 	
-	sleep 20;
-
-	echo "#3"
-	./test_O2;
-	echo ""
+		echo "#4"
+		./test_O2;
+		echo ""
+		
+		sleep 20;
 	
-	sleep 20;
-
-	echo "#4"
-	./test_O2;
-	echo ""
-	
-	sleep 20;
-
-	echo "#5"
-	./test_O2;
-	echo ""
+		echo "#5"
+		./test_O2;
+		echo ""
+	fi
 
 else
 
 	make test
 
-	echo "#1"
-	./test;
-	echo ""
+	if [ $? -eq 0 ]; then
+		echo "#1"
+		./test;
+		echo ""
+		
+		sleep 20;
+		
+		echo "#2"
+		./test;
+		echo ""
+		
+		sleep 20;
 	
-	sleep 20;
+		echo "#3"
+		./test;
+		echo ""
+		
+		sleep 20;
 	
-	echo "#2"
-	./test;
-	echo ""
+		echo "#4"
+		./test;
+		echo ""
+		
+		sleep 20;
 	
-	sleep 20;
-
-	echo "#3"
-	./test;
-	echo ""
-	
-	sleep 20;
-
-	echo "#4"
-	./test;
-	echo ""
-	
-	sleep 20;
-
-	echo "#5"
-	./test;
-	echo ""
+		echo "#5"
+		./test;
+		echo ""
+	fi
 
 fi
 
