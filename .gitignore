@@ -20,7 +20,7 @@ obj/
 a
 res
 test
-test_O2
+test*
 
 # Garbage
 .DS_Store
