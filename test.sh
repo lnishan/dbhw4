@@ -1,7 +1,7 @@
 #! /bin/sh
 
-if [ "$1" = "O2" ]; then
-	./run.sh O2 | tee res_raw.txt
+if [ -n "$1" ]; then
+	./run.sh $1 | tee res_raw.txt
 else
 	./run.sh | tee res_raw.txt
 fi
