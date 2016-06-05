@@ -47,5 +47,6 @@ int main(int argc, char *argv[]) {
 	printf("| **Avg.** |");
 	for (j = 0; j < 4; j++)
 		printf(" **%.5f** |", sum[j] / 5.0);
+	puts("");
 	return 0;
 }
