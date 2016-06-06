@@ -158,6 +158,8 @@ void db::import(const char filename[]){
 			wbuf[iter + 4] = rbuf[i + 5];
 			wbuf[iter + 5] = rbuf[i + 6];
 
+			i += 27; // 7 + 20
+
 			while (rbuf[i] != '\n') ++i;
 			++i;
 
