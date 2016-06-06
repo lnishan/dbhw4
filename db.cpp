@@ -139,6 +139,7 @@ void db::import(const char filename[]){
 				i = j - 1;
 				next_iter = k + 1;
 			} else {
+				i += 28;
 				while (rbuf[i] != '\n') ++i;
 				++i;
 				next_iter = iter;
