@@ -86,7 +86,7 @@ cd dbhw4
 ➔ Simple decoding to boost input efficiency  
 
 * High reserves on `std::vectors`  
-➔ Reduce the number of memory reallocations  
+➔ Reduce memory reallocations  
 ➔ Trade memory for speed  
 
 * Use mostly C library  
@@ -96,7 +96,7 @@ cd dbhw4
 * C++11 features  
 ➔ Use newer functions with underlying move semantics to prevent unnecessary data copying  
 
-* Reduction of branch instructions  
+* Reduce branch instructions  
 ➔ Eliminate branch misprediction penalties  
 
 * Generally robust codes throughout
@@ -115,9 +115,9 @@ double result4 = mydb.query("JFK", "IAH");
 double result5 = mydb.query("LAX", "IAH");
 ```
 
-### Efficiency
+### Results
 
-All the results below were tested with no optimizations
+*All the results below were tested with no compiler optimizations as was required by the course TAs*
 
 > **Date:** 12:48 PM (UTC+8), June 6, 2016  
 > **Hardware:** 50GB Vmware Disk, 4GB RAM, 1 vCore (Guest VM, Host: 1TB SSHD, 16GB RAM, i7-3770)  
