@@ -45,7 +45,7 @@ Dependencies:
 * g++ 4.8.4 or newer  
 * make
 
-Tested on Windows, Mac OSX, Ubuntu and FreeBSD
+Tested on `Windows`, `Mac OSX`, `Ubuntu` and `FreeBSD`
 
 ```bash
 # Clone the repo
@@ -70,28 +70,28 @@ cd dbhw4
 
 ## Optimizations
 
-* A specialized and highly-optimized hash map  
+* A specialized and highly-optimized `hash map`  
 ➔ Simple tabulation hashing  
 ➔ Linear probing  
 
-* An extra-large read buffer  
+* An extra-large `read buffer`  
 ➔ Applicable to both import and indexing  
 ➔ Reduce system call overheads
 
-* An extra-large write buffer  
+* An extra-large `write buffer`  
 ➔ No need to write to the file before queries  
 ➔ Reduce system call overheads
 
 * Compact and uniform file format  
 ➔ Simple decoding to boost input efficiency  
 
-* High reserves on std::vectors  
+* High reserves on `std::vectors`  
 ➔ Reduce the number of memory reallocations  
 ➔ Trade memory for speed  
 
 * Use mostly C library  
 ➔ C library is oftentimes more efficient  
-➔ Some C++ STLs are incredibly slow, especially std::string and related I/O functions
+➔ Some C++ STLs are incredibly slow, especially `std::string` and related I/O functions
 
 * C++11 features  
 ➔ Use newer functions with underlying move semantics to prevent unnecessary data copying  
@@ -104,6 +104,7 @@ cd dbhw4
 
 ## Test Results
 
+
 ### Queries
 
 ```cpp
@@ -114,7 +115,9 @@ double result4 = mydb.query("JFK", "IAH");
 double result5 = mydb.query("LAX", "IAH");
 ```
 
----
+### Efficiency
+
+All the results below were tested with no optimizations
 
 > **Date:** 12:48 PM (UTC+8), June 6, 2016  
 > **Hardware:** 50GB Vmware Disk, 4GB RAM, 1 vCore (Guest VM, Host: 1TB SSHD, 16GB RAM, i7-3770)  
@@ -131,18 +134,18 @@ double result5 = mydb.query("LAX", "IAH");
 
 ---
 
-> **Date:** 10:20 PM (UTC+8), June 5, 2016  
+> **Date:** 6:15 PM (UTC+8), June 6, 2016  
 > **Hardware:** 30GB Vmware Disk, 4GB RAM, 1 vCore (Guest VM, Host: 1TB SSHD, 16GB RAM, i7-3770)  
 > **Environment:** gcc 6.0.0, FreeBSD 10.3-RELEASE
 
 | # | Import | Dry-Queries | Indexing | Queries |
 | --- | --- | --- | --- | --- |
-| 1 | 6.1250 | 2.8438 | 4.4141 | 0.0156 |
-| 2 | 6.6094 | 2.8750 | 2.8438 | 0.0156 |
-| 3 | 6.1328 | 2.8047 | 2.0469 | 0.0078 |
-| 4 | 5.6172 | 2.8828 | 1.8750 | 0.0078 |
-| 5 | 5.6094 | 2.8750 | 1.9688 | 0.0156 |
-| **Avg.** | **6.01876** | **2.85626** | **2.62972** | **0.01248** |
+| 1 | 4.2734 | 2.6953 | 1.7109 | 0.0156 |
+| 2 | 4.2891 | 2.6875 | 1.6406 | 0.0078 |
+| 3 | 4.3203 | 2.6797 | 1.6172 | 0.0156 |
+| 4 | 4.2656 | 2.6875 | 1.5938 | 0.0156 |
+| 5 | 4.2812 | 2.6797 | 1.5938 | 0.0078 |
+| **Avg.** | **4.28592** | **2.68594** | **1.63126** | **0.01248** |
 
 ---
 
@@ -191,17 +194,17 @@ double result5 = mydb.query("LAX", "IAH");
 
 ---
 
-> **Date:** 10:33 PM (UTC+8), June 5, 2016  
+> **Date:** 4:13 PM (UTC+8), June 6, 2016  
 > **Hardware:** 1TB SSHD, 16GB RAM, i7-3770 (Desktop)  
 > **Environment:** Visual Studio 2015, Windows 10 Enterprise 64-bit
 
 | # | Import | Dry-Queries | Indexing | Queries |
 | --- | --- | --- | --- | --- |
-| 1 | 5.5300 | 2.6540 | 0.5610 | 0.0680 |
-| 2 | 5.5040 | 2.6500 | 0.5600 | 0.0670 |
-| 3 | 5.5570 | 2.6350 | 0.5390 | 0.0680 |
-| 4 | 5.5470 | 2.6480 | 0.5610 | 0.0670 |
-| 5 | 5.5220 | 2.6550 | 0.5590 | 0.0670 |
-| **Avg.** | **5.53200** | **2.64840** | **0.55600** | **0.06740** |
+| 1 | 5.3940 | 2.6460 | 0.5550 | 0.0680 |
+| 2 | 5.3290 | 2.6230 | 0.5600 | 0.0690 |
+| 3 | 5.2600 | 2.6130 | 0.5550 | 0.0660 |
+| 4 | 5.2900 | 2.6140 | 0.5340 | 0.0660 |
+| 5 | 5.2760 | 2.6160 | 0.5530 | 0.0670 |
+| **Avg.** | **5.30980** | **2.62240** | **0.55140** | **0.06720** |
 
 ---
