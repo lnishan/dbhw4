@@ -302,8 +302,11 @@ double db::query(const char ori[], const char dst[]){
 					}
 					++flights;
 					sum += delay;
-					for ( ; rbuf[i] != '\n'; ++i) ;
+					i += j;
+				} else {
+					i += 7;
 				}
+				for ( ; rbuf[i] != '\n'; ++i) ;
 			}
 			sz_left -= read_sz;
 
