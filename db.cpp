@@ -305,7 +305,7 @@ double db::query(const char ori[], const char dst[]){
 				} else {
 					i += 7;
 				}
-				for ( ; rbuf[i] != '\n'; ++i) ;
+				for ( ; rbuf[i]; ++i) ;
 			}
 			sz_left -= read_sz;
 
