@@ -211,7 +211,7 @@ void db::createIndex(){
 	
 	for (i = 0, pos_base = 0; sz_left; i = 0) { 
 		for ( ; rbuf[i]; ++i) {
-			mp.insert((&rbuf[i]), pos_base + i);
+			mp.insert((&rbuf[i]), pos_base + i + 6);
 			for ( ; rbuf[i] != '\n'; ++i) ;
 		}
 		sz_left -= read_sz;
@@ -249,15 +249,15 @@ double db::query(const char ori[], const char dst[]){
 			int i, delay;
 			for (auto &p: it->pos) {
 				fseek(fi, p, SEEK_SET);
-				fgets(s, 30, fi);
-				if (s[6] == '-') {
-					delay = s[7] - 48;
-					for (i = 8; s[i] != '\n'; ++i)
+				fread(s, 1, 4, fi);
+				if (s[0] == '-') {
+					delay = s[1] - 48;
+					for (i = 2; s[i] != '\n'; ++i)
 						delay = delay * 10 + s[i] - 48;
 					delay = -delay;
 				} else {
-					delay = s[6] - 48;
-					for (i = 7; s[i] != '\n'; ++i)
+					delay = s[0] - 48;
+					for (i = 1; s[i] != '\n'; ++i)
 						delay = delay * 10 + s[i] - 48;
 				}
 				sum += delay;
@@ -285,9 +285,8 @@ double db::query(const char ori[], const char dst[]){
 			read_sz += j;
 		} else
 			rbuf[read_sz] = 0;
-		for (i = 0; sz_left; i = 0) { 
-			for ( ; rbuf[i]; ++i) {
-				ts = rbuf + i;
+		for (ts = rbuf; sz_left; ts = rbuf) { 
+			for ( ; ts[0]; ++ts) {
 				if (ts[0] == ori[0] && ts[1] == ori[1] && ts[2] == ori[2] &&
 						ts[3] == dst[0] && ts[4] == dst[1] && ts[5] == dst[2]) {
 					if (ts[6] == '-') {
@@ -302,11 +301,11 @@ double db::query(const char ori[], const char dst[]){
 					}
 					++flights;
 					sum += delay;
-					i += j;
+					ts += j;
 				} else {
-					i += 7;
+					ts += 7;
 				}
-				for ( ; rbuf[i] != '\n'; ++i) ;
+				for ( ; ts[0] != '\n'; ++ts) ;
 			}
 			sz_left -= read_sz;
 

@@ -16,6 +16,8 @@ int main(int argc, char* argv[]){
 
 	//Import data
 	clock_t tImport = clock();
+	// mydb.import("data/2004.csv");
+	// mydb.import("data/2005.csv");
 	mydb.import("data/2006.csv");
 	mydb.import("data/2007.csv");
 	mydb.import("data/2008.csv");
