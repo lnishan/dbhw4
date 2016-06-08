@@ -135,7 +135,7 @@ void db::import(const char filename[]){
 			if (rbuf[i] != 'N' && rbuf[i] != ',') { // NA, Empty
 				for (j = i, k = iter + 6; rbuf[j] != ','; ++j, ++k)
 					wbuf[k] = rbuf[j];
-				wbuf[k] = '\n';
+				wbuf[k] = 0;
 				i = j - 1;
 				next_iter = k + 1;
 			} else {
@@ -181,7 +181,7 @@ void db::import(const char filename[]){
 	}
 
 	wbuf[iter] = 0;
-	fputs(wbuf, fo);
+	fwrite(wbuf, 1, iter, fo);
 	iter = 0;
 
 	fclose(fi);
@@ -212,7 +212,7 @@ void db::createIndex(){
 	for (i = 0, pos_base = 0; sz_left; i = 0) { 
 		for ( ; rbuf[i]; ++i) {
 			mp.insert((&rbuf[i]), pos_base + i);
-			for ( ; rbuf[i] != '\n'; ++i) ;
+			for ( ; rbuf[i]; ++i) ;
 		}
 		sz_left -= read_sz;
 		pos_base += read_sz;
@@ -235,7 +235,6 @@ void db::createIndex(){
 double db::query(const char ori[], const char dst[]){
 	//Do the query and return the average ArrDelay of flights from origin to dest.
 	//This method will be called multiple times.
-	// printf("%d\n", mp.hash(ori, dst));
 
 	double ret;
 	if (indexed) {
@@ -252,12 +251,12 @@ double db::query(const char ori[], const char dst[]){
 				fgets(s, 30, fi);
 				if (s[6] == '-') {
 					delay = s[7] - 48;
-					for (i = 8; s[i] != '\n'; ++i)
+					for (i = 8; s[i]; ++i)
 						delay = delay * 10 + s[i] - 48;
 					delay = -delay;
 				} else {
 					delay = s[6] - 48;
-					for (i = 7; s[i] != '\n'; ++i)
+					for (i = 7; s[i]; ++i)
 						delay = delay * 10 + s[i] - 48;
 				}
 				sum += delay;
@@ -292,12 +291,12 @@ double db::query(const char ori[], const char dst[]){
 						ts[3] == dst[0] && ts[4] == dst[1] && ts[5] == dst[2]) {
 					if (ts[6] == '-') {
 						delay = ts[7] - 48;
-						for (j = 8; ts[j] != '\n'; ++j)
+						for (j = 8; ts[j]; ++j)
 							delay = delay * 10 + ts[j] - 48;
 						delay = -delay;
 					} else {
 						delay = ts[6] - 48;
-						for (j = 7; ts[j] != '\n'; ++j)
+						for (j = 7; ts[j]; ++j)
 							delay = delay * 10 + ts[j] - 48;
 					}
 					++flights;
