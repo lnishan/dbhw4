@@ -133,21 +133,24 @@ void db::import(const char filename[]){
 			for ( ; cnt != 14; ++i)
 				if (rbuf[i] == ',') ++cnt;
 			if (rbuf[i] != 'N' && rbuf[i] != ',') { // NA, Empty
-				for (j = i, k = iter + 6; rbuf[j] != ','; ++j, ++k)
-					wbuf[k] = rbuf[j];
+				for (k = iter + 6; rbuf[i] != ','; ++i, ++k)
+					wbuf[k] = rbuf[i];
 				wbuf[k] = '\n';
-				i = j - 1;
 				next_iter = k + 1;
 			} else {
 				i += 28;
 				while (rbuf[i] != '\n') ++i;
 				++i;
-				next_iter = iter;
 				continue;
 			}
 
-			for ( ; cnt != 16; ++i)
-				if (rbuf[i] == ',') ++cnt;
+			// for ( ; cnt != 16; ++i)
+			//	if (rbuf[i] == ',') ++cnt;
+			// -> rbuf[i] = 15th ,
+			++i;
+			while (rbuf[i] != ',') ++i;
+			++i;
+
 			wbuf[iter    ] = rbuf[i    ];
 			wbuf[iter + 1] = rbuf[i + 1];
 			wbuf[iter + 2] = rbuf[i + 2];
