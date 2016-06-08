@@ -15,6 +15,9 @@ res
 test
 test*
 
+# Assembly
+*.s
+
 # Garbage
 .DS_Store
 *.stackdump
