@@ -6,31 +6,31 @@ if [ -n "$1" ]; then
 	
 	if [ $? -eq 0 ]; then
 		echo "#1"
-		./test_$1;
+		sudo nice -n -20 ./test_$1;
 		echo ""
 		
 		sleep 20;
 		
 		echo "#2"
-		./test_$1;
+		sudo nice -n -20 ./test_$1;
 		echo ""
 		
 		sleep 20;
 	
 		echo "#3"
-		./test_$1;
+		sudo nice -n -20 ./test_$1;
 		echo ""
 		
 		sleep 20;
 	
 		echo "#4"
-		./test_$1;
+		sudo nice -n -20 ./test_$1;
 		echo ""
 		
 		sleep 20;
 	
 		echo "#5"
-		./test_$1;
+		sudo nice -n -20 ./test_$1;
 		echo ""
 	fi
 
@@ -40,31 +40,31 @@ else
 
 	if [ $? -eq 0 ]; then
 		echo "#1"
-		./test;
+		sudo nice -n -20 ./test;
 		echo ""
 		
 		sleep 20;
 		
 		echo "#2"
-		./test;
+		sudo nice -n -20 ./test;
 		echo ""
 		
 		sleep 20;
 	
 		echo "#3"
-		./test;
+		sudo nice -n -20 ./test;
 		echo ""
 		
 		sleep 20;
 	
 		echo "#4"
-		./test;
+		sudo nice -n -20 ./test;
 		echo ""
 		
 		sleep 20;
 	
 		echo "#5"
-		./test;
+		sudo nice -n -20 ./test;
 		echo ""
 	fi
 
