@@ -290,8 +290,9 @@ double db::query(const char ori[], const char dst[]){
 			rbuf[read_sz] = 0;
 		for (ts = rbuf; sz_left; ts = rbuf) { 
 			for ( ; ts[0]; ++ts) {
-				if (ts[0] == ori[0] && ts[1] == ori[1] && ts[2] == ori[2] &&
-						ts[3] == dst[0] && ts[4] == dst[1] && ts[5] == dst[2]) {
+				if (ts[0] == ori[0] && ts[3] == dst[0] &&
+					ts[1] == ori[1] && ts[4] == dst[1] &&
+					ts[2] == ori[2] && ts[5] == dst[2]) {
 					if (ts[6] == '-') {
 						delay = ts[7] - 48;
 						for (j = 8; ts[j] != '\n'; ++j)
