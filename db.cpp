@@ -7,7 +7,7 @@ int umap::TB_SIZE = 1 << TB_BITS;
 int umap::TB_MASK = TB_SIZE - 1;
 
 umap_t::umap_t(){
-	pos.reserve(2048);
+	pos.reserve(1024);
 }
 
 umap_ref::umap_ref(): used(0) {
@@ -63,7 +63,7 @@ void umap::insert(const char key_i[6], const long &pos) {
 		ref[h].key[4] = key_i[4];
 		ref[h].key[5] = key_i[5];
 	}
-	data[h].pos.emplace_back(pos);
+	data[h].pos.push_back(pos);
 }
 
 inline int umap::hash(const char ori[3], const char dst[3]) {
