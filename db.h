@@ -233,7 +233,7 @@ class umap {
 
 class db{
 	private:
-		long WBUF_SIZE = 100000000;
+		long WBUF_SIZE = 200000000;
 		long RBUF_SIZE = 200000000;
 
 		char *wbuf;

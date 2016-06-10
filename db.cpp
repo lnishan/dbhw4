@@ -154,20 +154,19 @@ void db::import(const char filename[]){
 			// -> rbuf[i] = 15th ,
 			++i;
 			while (rbuf[i] != ',') ++i;
-			++i;
 
-			wbuf[iter    ] = rbuf[i    ];
-			wbuf[iter + 1] = rbuf[i + 1];
-			wbuf[iter + 2] = rbuf[i + 2];
+			wbuf[iter    ] = rbuf[i + 1];
+			wbuf[iter + 1] = rbuf[i + 2];
+			wbuf[iter + 2] = rbuf[i + 3];
 
 			// for ( ; cnt != 17; ++i)
 			// 	if (rbuf[i] == ',') ++cnt;
 
-			wbuf[iter + 3] = rbuf[i + 4];
-			wbuf[iter + 4] = rbuf[i + 5];
-			wbuf[iter + 5] = rbuf[i + 6];
+			wbuf[iter + 3] = rbuf[i + 5];
+			wbuf[iter + 4] = rbuf[i + 6];
+			wbuf[iter + 5] = rbuf[i + 7];
 
-			i += 27; // 7 + 20
+			i += 28; // 8 + 20
 
 			while (rbuf[i] != '\n') ++i;
 			++i;
