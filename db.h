@@ -209,6 +209,7 @@ class umap_ref {
 };
 
 class umap {
+	friend class db;
 	private:
 		static int TB_BITS;
 		static int TB_SIZE;
@@ -220,6 +221,7 @@ class umap {
 		lni::vector<umap_ref> ref;
 		lni::vector<umap_t> data;
 	public:
+		
 		typedef umap_t * iterator;
 		umap();
 		inline int hash(const char [], const char []); 
@@ -240,7 +242,10 @@ class db{
 
 		char indexed;
 		char temp_dir[30];
+		char index_dir[30];
 		umap mp;
+
+		long *pos;
 	public:
 		db() {}
 

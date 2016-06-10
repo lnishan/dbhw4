@@ -89,6 +89,7 @@ void db::init(){
 	//Do your db initialization.
 	wbuf = new char[WBUF_SIZE];
 	rbuf = new char[RBUF_SIZE];
+	pos = new long[umap::TB_SIZE];
 	iter = 0;
 	indexed = 0;
 }
@@ -96,8 +97,12 @@ void db::init(){
 void db::setTempFileDir(const char dir[15]){
 	//All the files that created by your program should be located under this directory.
 	strcpy(temp_dir, dir);
+	strcpy(index_dir, dir);
 	strcat(temp_dir, "/lnishan.db");
+	strcat(index_dir, "/index");
 	FILE *fo = fopen(temp_dir, "w"); // empties the file
+	fclose(fo);
+	fo = fopen(index_dir, "w");
 	fclose(fo);
 }
 
@@ -157,7 +162,7 @@ void db::import(const char filename[]){
 
 			// for ( ; cnt != 17; ++i)
 			// 	if (rbuf[i] == ',') ++cnt;
-			
+
 			wbuf[iter + 3] = rbuf[i + 4];
 			wbuf[iter + 4] = rbuf[i + 5];
 			wbuf[iter + 5] = rbuf[i + 6];
@@ -211,7 +216,7 @@ void db::createIndex(){
 		read_sz += j;
 	} else
 		rbuf[read_sz] = 0;
-	
+
 	for (i = 0, pos_base = 0; sz_left; i = 0) { 
 		for ( ; rbuf[i]; ++i) {
 			mp.insert((&rbuf[i]), pos_base + i + 6);
@@ -232,6 +237,27 @@ void db::createIndex(){
 	}
 
 	fclose(fi);
+	fi = fopen(temp_dir, "rb");
+	iter = 0;
+	FILE * fo = fopen(index_dir, "wb");
+	for (i = 0; i < umap::TB_SIZE; ++i) {
+		pos[i] = iter;
+		for (auto &p: mp.data[i].pos) {
+			fseek(fi, p, SEEK_SET);
+			fread(s, 1, 4, fi);
+			wbuf[iter   ] = s[0];
+			wbuf[iter + 1] = s[1];
+			wbuf[iter + 2] = s[2];
+			wbuf[iter + 3] = s[3];
+			iter += 4;
+		}
+	}
+	
+	fwrite(wbuf, 1, iter, fo);
+
+	fclose(fi);
+	fclose(fo);
+
 	indexed = 1;
 }
 
@@ -246,26 +272,32 @@ double db::query(const char ori[], const char dst[]){
 		if (it == NULL) // Not found
 			ret = 0.0;
 		else {
-			FILE * fi = fopen(temp_dir, "rb");
-			char s[30];
+
+			FILE *fi = fopen(index_dir, "rb");
+			int i, j, delay;
+			char *ts;
+
+			auto idx = it - (&mp.data[0]);
+			fseek(fi, pos[idx], SEEK_SET);
+			auto sz = it->pos.size();
+			fread(rbuf, 1, sz << 2, fi);
 			long long sum = 0;
-			int i, delay;
-			for (auto &p: it->pos) {
-				fseek(fi, p, SEEK_SET);
-				fread(s, 1, 4, fi);
-				if (s[0] == '-') {
-					delay = s[1] - 48;
-					for (i = 2; s[i] != '\n'; ++i)
-						delay = delay * 10 + s[i] - 48;
+
+			for (ts = rbuf, i = 0; i < sz; ++i, ts += 4) {
+				if (ts[0] == '-') {
+					delay = ts[1] - 48;
+					for (j = 2; ts[j] != '\n' && j < 4; ++j)
+						delay = delay * 10 + ts[j] - 48;
 					delay = -delay;
 				} else {
-					delay = s[0] - 48;
-					for (i = 1; s[i] != '\n'; ++i)
-						delay = delay * 10 + s[i] - 48;
+					delay = ts[0] - 48;
+					for (j = 1; ts[j] != '\n' && j < 4; ++j)
+						delay = delay * 10 + ts[j] - 48;
 				}
 				sum += delay;
 			}
 			ret = (double)sum / it->pos.size();
+
 			fclose(fi);
 		}
 	} else {
@@ -274,11 +306,11 @@ double db::query(const char ori[], const char dst[]){
 		long long sum = 0;
 		int i, j, delay, flights = 0;
 		long sz, sz_left, read_sz;
-	
+
 		fseek(fi, 0, SEEK_END);
 		sz_left = sz = ftell(fi);
 		rewind(fi);
-		
+
 		read_sz = min(sz_left, RBUF_SIZE - 30);
 		fread(rbuf, 1, read_sz, fi);
 		if (fgets(s, 30, fi)) {
@@ -291,8 +323,8 @@ double db::query(const char ori[], const char dst[]){
 		for (ts = rbuf; sz_left; ts = rbuf) { 
 			for ( ; ts[0]; ++ts) {
 				if (ts[0] == ori[0] && ts[3] == dst[0] &&
-					ts[1] == ori[1] && ts[4] == dst[1] &&
-					ts[2] == ori[2] && ts[5] == dst[2]) {
+						ts[1] == ori[1] && ts[4] == dst[1] &&
+						ts[2] == ori[2] && ts[5] == dst[2]) {
 					if (ts[6] == '-') {
 						delay = ts[7] - 48;
 						for (j = 8; ts[j] != '\n'; ++j)
@@ -322,7 +354,7 @@ double db::query(const char ori[], const char dst[]){
 				read_sz += j;
 			} else
 				rbuf[read_sz] = 0;
-	
+
 		}
 		ret = (double)sum / flights;
 		fclose(fi);
@@ -334,8 +366,11 @@ void db::cleanup(){
 	//Release memory, close files and anything you should do to clean up your db class.
 	FILE *fo = fopen(temp_dir, "w"); // empties the file
 	fclose(fo);
+	FILE *fo = fopen(index_dir, "w");
+	fclose(fo);
 
 	delete [] wbuf;
 	delete [] rbuf;
+	delete [] pos;
 }
 

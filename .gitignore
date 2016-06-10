@@ -4,6 +4,7 @@
 *.swp
 
 # Intermediate files
+index
 *.db
 *.txt
 
