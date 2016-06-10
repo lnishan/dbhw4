@@ -249,6 +249,7 @@ void db::createIndex(){
 				wbuf[iter++] = s[j];
 			wbuf[iter++] = '\n';
 		}
+		wbuf[iter++] = 0;
 	}
 	pos[i] = iter;
 
@@ -279,11 +280,10 @@ double db::query(const char ori[], const char dst[]){
 
 			auto idx = it - (&mp.data[0]);
 			fseek(fi, pos[idx], SEEK_SET);
-			auto sz = it->pos.size();
 			fread(rbuf, 1, pos[idx + 1] - pos[idx], fi);
 			long long sum = 0;
 
-			for (ts = rbuf, i = 0; i < sz; ts += j + 1, ++i) {
+			for (ts = rbuf; ts[0]; ts += j + 1) {
 				if (ts[0] == '-') {
 					delay = ts[1] - 48;
 					for (j = 2; ts[j] != '\n'; ++j)
@@ -291,7 +291,7 @@ double db::query(const char ori[], const char dst[]){
 					delay = -delay;
 				} else {
 					delay = ts[0] - 48;
-					for (j = 1; ts[j] != '\n' && j < 4; ++j)
+					for (j = 1; ts[j] != '\n'; ++j)
 						delay = delay * 10 + ts[j] - 48;
 				}
 				sum += delay;
@@ -323,8 +323,8 @@ double db::query(const char ori[], const char dst[]){
 		for (ts = rbuf; sz_left; ts = rbuf) { 
 			for ( ; ts[0]; ++ts) {
 				if (ts[0] == ori[0] && ts[3] == dst[0] &&
-						ts[1] == ori[1] && ts[4] == dst[1] &&
-						ts[2] == ori[2] && ts[5] == dst[2]) {
+					ts[1] == ori[1] && ts[4] == dst[1] &&
+					ts[2] == ori[2] && ts[5] == dst[2]) {
 					if (ts[6] == '-') {
 						delay = ts[7] - 48;
 						for (j = 8; ts[j] != '\n'; ++j)
