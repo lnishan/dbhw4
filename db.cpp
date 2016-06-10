@@ -89,7 +89,7 @@ void db::init(){
 	//Do your db initialization.
 	wbuf = new char[WBUF_SIZE];
 	rbuf = new char[RBUF_SIZE];
-	pos = new long[umap::TB_SIZE];
+	pos = new long[umap::TB_SIZE + 1];
 	iter = 0;
 	indexed = 0;
 }
@@ -244,14 +244,14 @@ void db::createIndex(){
 		for (auto &p: mp.data[i].pos) {
 			fseek(fi, p, SEEK_SET);
 			fread(s, 1, 4, fi);
-			wbuf[iter   ] = s[0];
-			wbuf[iter + 1] = s[1];
-			wbuf[iter + 2] = s[2];
-			wbuf[iter + 3] = s[3];
-			iter += 4;
+			wbuf[iter++] = s[0];
+			for (j = 1; s[j] != '\n' && j < 4 && s[j] >= 48 && s[j] <= 57; ++j)
+				wbuf[iter++] = s[j];
+			wbuf[iter++] = '\n';
 		}
 	}
-	
+	pos[i] = iter;
+
 	fwrite(wbuf, 1, iter, fo);
 
 	fclose(fi);
@@ -272,6 +272,7 @@ double db::query(const char ori[], const char dst[]){
 			ret = 0.0;
 		else {
 
+			int cnt = 0;
 			FILE *fi = fopen(index_dir, "rb");
 			int i, j, delay;
 			char *ts;
@@ -279,13 +280,13 @@ double db::query(const char ori[], const char dst[]){
 			auto idx = it - (&mp.data[0]);
 			fseek(fi, pos[idx], SEEK_SET);
 			auto sz = it->pos.size();
-			fread(rbuf, 1, sz << 2, fi);
+			fread(rbuf, 1, pos[idx + 1] - pos[idx], fi);
 			long long sum = 0;
 
-			for (ts = rbuf, i = 0; i < sz; ++i, ts += 4) {
+			for (ts = rbuf, i = 0; i < sz; ts += j + 1, ++i) {
 				if (ts[0] == '-') {
 					delay = ts[1] - 48;
-					for (j = 2; ts[j] != '\n' && j < 4; ++j)
+					for (j = 2; ts[j] != '\n'; ++j)
 						delay = delay * 10 + ts[j] - 48;
 					delay = -delay;
 				} else {
