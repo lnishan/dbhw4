@@ -244,8 +244,14 @@ void db::createIndex(){
 		for (auto &p: mp.data[i].pos) {
 			fseek(fi, p, SEEK_SET);
 			fread(s, 1, 4, fi);
-			wbuf[iter++] = s[0];
-			for (j = 1; s[j] != '\n' && j < 4 && s[j] >= 48 && s[j] <= 57; ++j)
+			if (s[0] == '-') {
+				j = 1;
+				wbuf[iter++] = s[0];
+			} else {
+				j = 0;
+				wbuf[iter++] = '+';
+			}
+			for (; s[j] != '\n' && j < 4 && s[j] >= 48 && s[j] <= 57; ++j)
 				wbuf[iter++] = s[j];
 			wbuf[iter++] = '\n';
 		}
@@ -284,16 +290,11 @@ double db::query(const char ori[], const char dst[]){
 			long long sum = 0;
 
 			for (ts = rbuf; ts[0]; ts += j + 1) {
-				if (ts[0] == '-') {
-					delay = ts[1] - 48;
-					for (j = 2; ts[j] != '\n'; ++j)
-						delay = delay * 10 + ts[j] - 48;
+				delay = ts[1] - 48;
+				for (j = 2; ts[j] != '\n'; ++j)
+					delay = delay * 10 + ts[j] - 48;
+				if (ts[0] == '-')
 					delay = -delay;
-				} else {
-					delay = ts[0] - 48;
-					for (j = 1; ts[j] != '\n'; ++j)
-						delay = delay * 10 + ts[j] - 48;
-				}
 				sum += delay;
 			}
 			ret = (double)sum / it->pos.size();
