@@ -123,6 +123,7 @@ double result5 = mydb.query("LAX", "IAH");
 > **Hardware:** 50GB Vmware Disk, 4GB RAM, 1 vCore (Guest VM, Host: 1TB SSHD, 16GB RAM, i7-3770)  
 > **Environment:** gcc 6.1.1, Kubuntu 16.04 LTS
 
+| # | Import | Dry-Queries | Indexing | Queries |
 | --- | --- | --- | --- | --- |
 | 1 | 3.9336 | 1.1558 | 6.0963 | 0.0007 |
 | 2 | 3.8830 | 1.1459 | 6.3977 | 0.0007 |
