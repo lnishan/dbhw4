@@ -22,4 +22,3 @@ install:
   # - clang -v
 script:
   - make 
-  - make test_O2
