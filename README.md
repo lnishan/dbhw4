@@ -72,7 +72,7 @@ cd dbhw4
 
 * A specialized and highly-optimized `hash map`  
 ➔ Simple tabulation hashing  
-➔ Linear probing  
+➔ Linear probing
 
 * An extra-large `read buffer`  
 ➔ Applicable to both import and indexing  
@@ -82,22 +82,28 @@ cd dbhw4
 ➔ No need to write to the file before queries  
 ➔ Reduce system call overheads
 
+* A self-implemented and faster `vector`  
+➔ No overheads sacrificed for standard compliance  
+➔ Significantly less memory reallocations due to more redundancies
+
 * Compact and uniform file format  
-➔ Simple decoding to boost input efficiency  
+➔ Simple decoding to boost input efficiency
+
+* Reduce branch instructions  
+➔ Eliminate branch misprediction penalties  
 
 * High reserves on `std::vectors`  
 ➔ Reduce memory reallocations  
-➔ Trade memory for speed  
+➔ Trade memory for speed
 
 * Use mostly C library  
 ➔ C library is oftentimes more efficient  
 ➔ Some C++ STLs are incredibly slow, especially `std::string` and related I/O functions
 
 * C++11 features  
-➔ Use newer functions with underlying move semantics to prevent unnecessary data copying  
+➔ Use newer functions with underlying move semantics to prevent unnecessary data copying
 
-* Reduce branch instructions  
-➔ Eliminate branch misprediction penalties  
+
 
 * Generally robust codes throughout
 
