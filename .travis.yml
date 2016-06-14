@@ -8,7 +8,7 @@ before_install:
   - sudo apt-get install -qq 
 install:
   # install gcc-4.8 with c++11 support: https://github.com/travis-ci-tester/travis-test-gcc-cxx-11
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y --force-yes
   - sudo apt-get update
   - sudo apt-get install g++-4.8
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
