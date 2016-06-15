@@ -83,7 +83,7 @@ cd dbhw4
 ➔ Reduce system call overheads
 
 * A self-implemented and faster `vector`  
-➔ No overheads sacrificed for standard compliance  
+➔ No overheads induced by standard compliance and "good" design practices  
 ➔ Significantly less memory reallocations due to more redundancies
 
 * Compact and uniform file format  
@@ -155,8 +155,23 @@ double result5 = mydb.query("LAX", "IAH");
 
 ---
 
+> **Date:** 1:45 AM (UTC+8), June 10, 2016  
+> **Hardware:** 16GB Persistent Disk, 3.75GB RAM, 1 HyperThread on 2.5GHz Xeon E5 v2 (Google Compute Engine n1-standard-1)  
+> **Environment:** gcc 6.1.1, Ubuntu 16.04 LTS
+
+| # | Import | Dry-Queries | Indexing | Queries |
+| --- | --- | --- | --- | --- |
+| 1 | 5.4656 | 1.6126 | 10.2230 | 0.0009 |
+| 2 | 5.7495 | 1.5904 | 9.6879 | 0.0009 |
+| 3 | 5.8680 | 1.6061 | 10.0110 | 0.0009 |
+| 4 | 5.5988 | 1.5938 | 9.6082 | 0.0009 |
+| 5 | 5.6484 | 1.5993 | 9.8001 | 0.0009 |
+| **Avg.** | **5.66606** | **1.60044** | **9.86604** | **0.00090** |
+
+---
+
 > **Date:** 3:15 AM (UTC+8), June 15, 2016  
-> **Hardware:** 40GB SSD, 2GB RAM, 1 CPU on DigitalOcean VPS 
+> **Hardware:** 40GB SSD, 2GB RAM, 1 CPU on DigitalOcean VPS  
 > **Environment:** gcc 6.1.1, Ubuntu 16.04 LTS
 
 | # | Import | Dry-Queries | Indexing | Queries |
