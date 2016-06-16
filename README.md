@@ -4,6 +4,8 @@ Introduction to Database, Spring 2016. Assignment 4 (Final Project)
 
 [![Build Status](https://travis-ci.com/lnishan/dbhw4.svg?token=zyWYRz96q11zafMJcoGG&branch=master)](https://travis-ci.com/lnishan/dbhw4)
 
+[Report (pdf)](_report/0113110.pdf)
+
 ---
 
 
